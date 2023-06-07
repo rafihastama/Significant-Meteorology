@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RAW SIGMET WEB</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <h1>Chatbot Form</h1>
+
+    <div id="chatbox"></div>
+
+    <form id="chat-form">
+      <label for="prompt">Prompt:</label>
+      <input type="text" id="prompt" name="prompt" required><br>
+
+      <label for="result">Result:</label>
+      <input type="text" id="result" name="result" readonly><br>
+
+      <input type="submit" value="Submit" id="submit-btn">
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      var map = L.map('map').setView([-2.5489, 118.0149], 5);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+      }).addTo(map);
+
+      const form = document.getElementById("chat-form");
+      const chatbox = document.getElementById("chatbox");
+      const resultInput = document.getElementById("result");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const promptInput = document.getElementById("prompt").value;
+        const result = processPrompt(promptInput);
+
+        const chatEntry = document.createElement("p");
+        chatEntry.innerHTML = "<strong>Prompt:</strong> " + promptInput + "<br><strong>Result:</strong> " + result;
+        chatbox.appendChild(chatEntry);
+
+        resultInput.value = result;
+        document.getElementById("prompt").value = "";
+      });
+
+      function processPrompt(prompt) {
+        // logicnya disini
+        return prompt;
+      }
+    </script>
+  </body>
+</html>
