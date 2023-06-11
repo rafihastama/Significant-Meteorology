@@ -10,7 +10,6 @@ class sql:
     )
 
     def insert(self, data):
-        print('a')
         cursor = self.db.cursor()
         try:
             query = "INSERT INTO extracted_sigmet (release_date, release_time, sigmet, status, " \
