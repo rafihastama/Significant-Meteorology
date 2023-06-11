@@ -1,5 +1,4 @@
 import re
-import sys
 import sql
 from datetime import datetime
 
@@ -51,13 +50,10 @@ def main():
         "va_speed": r"(\d{1,}KT)",
         "intensitivity": r"(WKN|NC|INTSF)",
     }
-    n = 1
+    # db
     db = sql.sql()
 
     for wd in waaf_data:
-        if n == 5:
-            break
-
         date = datetime.strptime(wd[0], '%H:%M, %d %B %Y')
         sql_data = [datetime.strftime(date, "%Y-%m-%d"), datetime.strftime(date, "%H:%M:%S"), wd[1]]
 
@@ -210,7 +206,6 @@ def main():
                     else:
                         sql_data.append('')
                         # print(f"{pattern} -> None")
-
             # intensitivity
             if pattern == "intensitivity":
                 if _cnl:
@@ -226,8 +221,7 @@ def main():
                         # print(f"{pattern} -> None")
 
         db.insert(data=sql_data)
-        print(sql_data)
-        n += 1
+        # print(sql_data)
 
     db.close_conn()
 
