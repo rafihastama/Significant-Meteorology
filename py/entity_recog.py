@@ -20,31 +20,12 @@ def main():
                 d = [datetime.strptime(text_.strip()[:15], "%H:%M, %d/%m/%y"), text_[17:]]
                 waaf_data.append(d)
 
-            #     if "VRB" in content or "FCST" in content:
-            #         print(line)
-            #         print(content)
-
-            # line+=1
-
         waaf_data.sort(reverse=False)
 
     # format date
     for i in range(len(waaf_data)):
         waaf_data[i][0] = waaf_data[i][0].strftime("%H:%M, %d %B %Y")
         # print(waaf_data[i][1])
-
-    # Tokenization and stop word removal
-    # stop_word = open('stop_word.txt', 'r')
-
-    # for i in range(len(waaf_data)):
-    #     waaf_data[i][1] = waaf_data[i][1].split(" ")
-    #     tmp_sw = []
-    #     # stop word removal
-    #     for j in range(len(waaf_data[i][1])):
-    #         if waaf_data[i][1][j].lower() not in stop_word:
-    #             tmp_sw.append(waaf_data[i][1][j])
-    #
-    #     waaf_data[i][1] = tmp_sw
 
     patterns = {
         "status": r"(CNL)",
@@ -53,24 +34,15 @@ def main():
         "flight_information": r"(JAKARTA|UJUNG PANDANG)",
         "mountain": r"MT\s(\w{3,10})",
         "mountain_pos": r"PSN\s([NSEW]\d{4,5}\s[NSEW]\d{4,5})",
-        # "mountain_pos": r"((PSN) ((S|N|E)(\d{4,5}) (S|N|E)(\d{4,5})))",
         "observed_at": r"(\d{4,5}Z)",
         "polygon": r"[NSE]\s\d{4,5}|[NSE]\d{4,5}",
-        # "polygon": r"(?s)((N|S|E)(\s)(\d{4,5}))|((N|S|E)(\d{4,5}))",
         "flight_level": r"FL(\d{3,})",
         "va_movement": r"MOV\s(\w{1,})|MO\sV\s(\w{1,})|VRB",
         "va_speed": r"(\d{1,}KT)",
         "intensitivity": r"(WKN|NC|INTSF)",
-        # "sigmet_cnl_valid_date": r"VALID\s\d{6}\/\d{6}",
     }
 
-    n = 1
-
     for wd in waaf_data:
-        # -------------
-        # if n == 10:
-        #     break
-        # -------------
         date = datetime.strptime(wd[0], '%H:%M, %d %B %Y')
         sql_data = [datetime.strftime(date, "%Y-%m-%d"), datetime.strftime(date, "%H:%M:%S"), wd[1]]
 
@@ -243,9 +215,7 @@ def main():
                         print(f"{pattern} -> None")
 
         print(sql_data)
-        n += 1
 
-    print(len(waaf_data))
 
 
 if __name__ == "__main__":
