@@ -1,6 +1,11 @@
 import re
 import sys
+import sql
 from datetime import datetime
+
+
+# Note:
+# FIX buat sigmet yang dibatalkan
 
 
 def knot_conversion(speed):
@@ -9,7 +14,6 @@ def knot_conversion(speed):
 
 def main():
     waaf_data = []
-
     with open("data.txt", 'r') as f:
         contents = f.readlines()
         # line = 1
@@ -19,6 +23,12 @@ def main():
                 text_ = text_.replace("Received at ", '')  # remove "Received at" and replace it with ''
                 d = [datetime.strptime(text_.strip()[:15], "%H:%M, %d/%m/%y"), text_[17:]]
                 waaf_data.append(d)
+
+            #     if "VRB" in content or "FCST" in content:
+            #         print(line)
+            #         print(content)
+
+            # line+=1
 
         waaf_data.sort(reverse=False)
 
@@ -41,8 +51,13 @@ def main():
         "va_speed": r"(\d{1,}KT)",
         "intensitivity": r"(WKN|NC|INTSF)",
     }
+    n = 1
+    db = sql.sql()
 
     for wd in waaf_data:
+        if n == 5:
+            break
+
         date = datetime.strptime(wd[0], '%H:%M, %d %B %Y')
         sql_data = [datetime.strftime(date, "%Y-%m-%d"), datetime.strftime(date, "%H:%M:%S"), wd[1]]
 
@@ -54,45 +69,44 @@ def main():
                 if len(res) > 0:
                     _cnl = 1
                     sql_data.append('Dibatalkan')
-                    print(f"{pattern} -> {res[0]}")
+                    # print(f"{pattern} -> {res[0]}")
                 else:
                     sql_data.append('')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
             # sigmet code
             if pattern == "sigmet_code":
                 sql_data.append(res[0])
-                print(f"{pattern} -> {res[0]}")
+                # print(f"{pattern} -> {res[0]}")
                 if _cnl:
                     sql_data.append(res[1])
-                    print(f"cancelation_sigmet_code -> {res[1]}")
+                    # print(f"cancelation_sigmet_code -> {res[1]}")
                 else:
                     sql_data.append('')
-                    print(f"cancelation_sigmet_code -> ")
+                    # print(f"cancelation_sigmet_code -> ")
             # valid date
             if pattern == "valid_date":
                 data = res[0].__str__().split("/")
-                # NOTE : tambah bulan dan tahun
                 date = f"{datetime.strftime(date, '%d %B %Y')}, {data[0][2:4]}:{data[0][4:]} - {data[1][2:4]}:{data[1][4:]}"
                 sql_data.append(date)
-                print(f"{pattern} -> {date}")
+                # print(f"{pattern} -> {date}")
             # flight information
             if pattern == "flight_information":
                 # sql_data += tuple(res[0])
                 sql_data.append(res[0])
-                print(f"{pattern} -> {res[0]}")
+                # print(f"{pattern} -> {res[0]}")
             # mountain
             if pattern == "mountain":
                 if _cnl:
                     sql_data.append(r'')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
                     sql_data.append(res[0])
-                    print(f"{pattern} -> {res[0]}")
+                    # print(f"{pattern} -> {res[0]}")
             # mountain pos
             if pattern == "mountain_pos":
                 if _cnl:
                     sql_data.append(r'')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
                     _data = res[0].__str__().split(" ")
                     # _str = []
@@ -119,21 +133,21 @@ def main():
                     _str = _str[:len(_str) - 3]
 
                     sql_data.append(_str)
-                    print(f"{pattern} -> {_str}")
+                    # print(f"{pattern} -> {_str}")
             # observed at
             if pattern == "observed_at":
                 if _cnl:
                     sql_data.append(r'')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
                     _format = f"{res[0][:2]}:{res[0][2:4]}"
                     sql_data.append(_format)
-                    print(f"{pattern} -> {_format}")
+                    # print(f"{pattern} -> {_format}")
             # polygon
             if pattern == "polygon":
                 if _cnl:
                     sql_data.append(r'')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
                     if len(res) > 2:
                         _data = res[2:]
@@ -160,62 +174,62 @@ def main():
 
                         _str = _str[:len(_str) - 3]
                         sql_data.append(_str)
-                        print(f"{pattern} -> {_str}")
+                        # print(f"{pattern} -> {_str}")
                     else:
                         sql_data.append('')
-                        print(f"{pattern} -> ")
+                        # print(f"{pattern} -> ")
             # flight level
             if pattern == "flight_level":
                 if _cnl:
                     sql_data.append(r'')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
-                    print(f"{pattern} -> {res[0]}")
+                    # print(f"{pattern} -> {res[0]}")
                     sql_data.append(res[0])
             # va movement
             if pattern == "va_movement":
                 if _cnl:
                     sql_data.append(r'')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
-                    if res[0] == 'VRB':
-                        print(f"{pattern} -> varies")
-                    else:
-                        _str = "Selatan" if "S" in res[0] else "Timur" if "E" in res[0] else "Utara" if "N" in res[
-                            0] else "Barat"
-                        sql_data.append(_str)
-                        print(f"{pattern} -> {_str}")
+                    _str = "Selatan" if "S" in res[0] else "Timur" if "E" in res[0] else "Utara" if "N" in res[
+                        0] else "Barat"
+                    sql_data.append(_str)
+                    # print(f"{pattern} -> {_str}")
             # va speed
             if pattern == "va_speed":
                 if _cnl:
                     sql_data.append(r'')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
                     if len(res) > 0:
                         speed = re.findall(r"\d{1,3}", res[0])
                         _str = f"{knot_conversion((float(speed[0])))} km/h"
                         sql_data.append(_str)
-                        print(f"{pattern} -> {_str}")
+                        # print(f"{pattern} -> {_str}")
                     else:
                         sql_data.append('')
-                        print(f"{pattern} -> None")
+                        # print(f"{pattern} -> None")
 
             # intensitivity
             if pattern == "intensitivity":
                 if _cnl:
                     sql_data.append('')
-                    print(f"{pattern} -> ")
+                    # print(f"{pattern} -> ")
                 else:
                     if len(res) > 0:
                         _str = "Tidak ada perubahan" if "NC" in res[0] else "Melemah" if "WKN" in res[0] else "Intensif"
                         sql_data.append(_str)
-                        print(f"{pattern} -> {_str}")
+                        # print(f"{pattern} -> {_str}")
                     else:
                         sql_data.append('')
-                        print(f"{pattern} -> None")
+                        # print(f"{pattern} -> None")
 
+        db.insert(data=sql_data)
         print(sql_data)
+        n += 1
 
+    db.close_conn()
 
 
 if __name__ == "__main__":
