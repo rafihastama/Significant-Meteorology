@@ -1,0 +1,16 @@
+Sigmet code : (SIGMET (\d{2}))
+Valid date : (VALID (\d{6}\/\d{6}))
+Flight information : (JAKARTA FIR|UJUNG PANDANG FIR)
+mt : ((MT) (\w{3,10}))
+mt psn : ((PSN) ((S|N|E)(\d{4,5}) (S|N|E)(\d{4,5})))
+observerd : (\d{4,5}Z)
+polgon : ((N|S|E)(\s)(\d{4,5}))|((N|S|E)(\d{4,5}))
+fligh level : (FL(\d{3,}))
+movement : (MOV\s\w{1,})
+speed : (\d{2,}KT)
+insensitivity : (WKN|NC|INTSF)
+
+SIGMET CANCELATION :
+sigmet status : (CNL (SIGMET (\d{2})))
+sigmet valid : (VALID (\d{6}\/\d{6}))
+sigmet yg dicancel : (SIGMET (\d{2}))
