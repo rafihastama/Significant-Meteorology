@@ -31,15 +31,40 @@
         maxZoom: 18,
       }).addTo(map);
 
-      var jakartaCoords = [
-        [-6.2088, 106.8456], // Jakarta Barat
-        [-6.1745, 106.8227], // Jakarta Utara
-        [-6.1877, 106.7567], // Jakarta Pusat
-        [-6.2370, 106.8286], // Jakarta Timur
-        [-6.3668, 106.8243]  // Jakarta Selatan
+      var certainAreaCoords = [
+        [-7.59, 112.51],
+        [-8.02, 113.02],
+        [-8.13, 113.08],
+        [-8.20, 112.50],
+        [-8.10, 112.46],
+        [-7.59, 112.51]
+        ];
+
+      var certainAreaPolygon = L.polygon(certainAreaCoords, { color: 'red' }).addTo(map);
+
+      var customCoords = [
+        [-8.03, 112.59],
+        [-8.13, 113.01],
+        [-8.15, 112.48],
+        [-8.03, 112.42],
+        [-7.57, 112.50],
+        [-8.03, 112.59]
       ];
 
-      var jakartaPolygon = L.polygon(jakartaCoords, { color: 'red' }).addTo(map);
+      var customPolygon = L.polygon(customCoords, { color: 'blue' }).addTo(map);
+
+
+      var secondAreaCoords = [
+        [2.51, 136.51],
+        [1.38, 139.20],
+        [0.32, 139.59],
+        [-1.19, 137.46],
+        [-2.26, 135.30],
+        [1.01, 133.30],
+        [2.51, 136.51]
+      ];
+
+      var secondAreaPolygon = L.polygon(secondAreaCoords, { color: 'red' }).addTo(map);
 
       var acehCoords = [
       [4.7721, 96.5284], // Aceh Utara
