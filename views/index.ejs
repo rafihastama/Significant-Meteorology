@@ -31,6 +31,26 @@
         maxZoom: 18,
       }).addTo(map);
 
+      var jakartaCoords = [
+        [-6.2088, 106.8456], // Jakarta Barat
+        [-6.1745, 106.8227], // Jakarta Utara
+        [-6.1877, 106.7567], // Jakarta Pusat
+        [-6.2370, 106.8286], // Jakarta Timur
+        [-6.3668, 106.8243]  // Jakarta Selatan
+      ];
+
+      var jakartaPolygon = L.polygon(jakartaCoords, { color: 'red' }).addTo(map);
+
+      var acehCoords = [
+      [4.7721, 96.5284], // Aceh Utara
+      [5.2226, 96.5141], // Banda Aceh
+      [4.6957, 97.0157], // Aceh Besar
+      [4.6510, 97.7474], // Aceh Tamiang
+      [3.8545, 97.3340]  // Aceh Selatan
+      ];
+
+      var acehPolygon = L.polygon(acehCoords, { color: 'red' }).addTo(map);
+
       const form = document.getElementById("chat-form");
       const chatbox = document.getElementById("chatbox");
       const resultInput = document.getElementById("result");
