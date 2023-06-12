@@ -18,10 +18,11 @@ def main():
         # line = 1
         for content in contents:
             if "WAAF" in content or "WIIF" in content:
-                text_ = re.sub("([*])+", "", content).strip().lstrip()  # remove "*" and replace it with ''
-                text_ = text_.replace("Received at ", '')  # remove "Received at" and replace it with ''
-                d = [datetime.strptime(text_.strip()[:15], "%H:%M, %d/%m/%y"), text_[17:]]
-                waaf_data.append(d)
+                if "VRB" not in content or "FCST" not in content:
+                    text_ = re.sub("([*])+", "", content).strip().lstrip()  # remove "*" and replace it with ''
+                    text_ = text_.replace("Received at ", '')  # remove "Received at" and replace it with ''
+                    d = [datetime.strptime(text_.strip()[:15], "%H:%M, %d/%m/%y"), text_[17:]]
+                    waaf_data.append(d)
 
             #     if "VRB" in content or "FCST" in content:
             #         print(line)
@@ -52,7 +53,7 @@ def main():
     }
     # db
     db = sql.sql()
-
+    n = 1
     for wd in waaf_data:
         date = datetime.strptime(wd[0], '%H:%M, %d %B %Y')
         sql_data = [datetime.strftime(date, "%Y-%m-%d"), datetime.strftime(date, "%H:%M:%S"), wd[1]]
@@ -93,7 +94,7 @@ def main():
             # mountain
             if pattern == "mountain":
                 if _cnl:
-                    sql_data.append(r'')
+                    sql_data.append('')
                     # print(f"{pattern} -> ")
                 else:
                     sql_data.append(res[0])
@@ -105,6 +106,16 @@ def main():
                     # print(f"{pattern} -> ")
                 else:
                     _data = res[0].__str__().split(" ")
+                    _tmp = []
+                    for i in range(len(_data)):
+                        _data[i] = _data[i].replace(" ", "")
+                        degree = _data[i][1:len(_data[i]) - 2]
+                        minute = _data[i][len(_data[i]) - 2:]
+                        calc = float("{:.2f}".format(float(degree) + (float(minute) / 60.0)))
+                        _format = f"{calc}\N{DEGREE SIGN} " \
+                                  f"{'Utara' if 'N' in _data[i] else 'Timur' if 'E' in _data[i] else 'Selatan' if 'S' in _data[i] else 'Barat'}"
+
+                        _tmp.append(_format)
                     # _str = []
                     # for dt in _data:
                     #     _str.append(
@@ -121,13 +132,12 @@ def main():
                     #     )
                     # _str = ' - '.join(map(str, _str))
 
-                    _str = ""
-                    for i in range(len(_data)):
-                        if i % 2 == 0:
-                            _str += f"{_data[i - 1]} {_data[i]} - "
+                    # _str = ""
+                    # for i in range(len(_data)):
+                    #     if i % 2 == 0:
+                    #         _str += f"{_data[i - 1]} {_data[i]} - "
 
-                    _str = _str[:len(_str) - 3]
-
+                    _str = " ".join(map(str, _tmp))
                     sql_data.append(_str)
                     # print(f"{pattern} -> {_str}")
             # observed at
@@ -142,36 +152,40 @@ def main():
             # polygon
             if pattern == "polygon":
                 if _cnl:
-                    sql_data.append(r'')
+                    sql_data.append('')
+                    sql_data.append('')
                     # print(f"{pattern} -> ")
                 else:
                     if len(res) > 2:
                         _data = res[2:]
-                        _tmp = []
-                        for dt in _data:
-                            _tmp.append(
-                                dt.replace(
-                                    "S" if "S" in dt
-                                    else "E" if "E" in dt
-                                    else "N" if "N" in dt
-                                    else "W",
-                                    "Lintang Selatan " if "S" in dt
-                                    else "Bujur Timur " if "E" in dt
-                                    else "Lintang Utara " if "N" in dt
-                                    else "Bujur Barat "
-                                )
-                            )
-                        # format polygon here
-                        # change _data to _tmp to see different result
-                        _str = ""
+                        _polygon_calculated = []
+                        _polygon_formated = []
+                        for i in range(len(_data)):
+                            _data[i] = _data[i].replace(" ", "")
+                            degree = _data[i][1:len(_data[i])-2]
+                            minute = _data[i][len(_data[i])-2:]
+                            calc = float("{:.2f}".format(float(degree) + (float(minute) / 60.0)))
+                            _format = f"{calc}\N{DEGREE SIGN} " \
+                                      f"{'Utara' if 'N' in _data[i] else 'Timur' if 'E' in _data[i] else 'Selatan' if 'S' in _data[i] else 'Barat'}"
+                            _polygon_calculated.append(calc)
+                            _polygon_formated.append(_format)
+
+                        _str_pc = ""
+                        _str_pf = ""
                         for i in range(len(_data)):
                             if i % 2 == 0:
-                                _str += f"{_data[i - 1]} {_data[i]} - "
+                                _str_pc += f"[{_polygon_calculated[i]}, {_polygon_calculated[i - 1]}], "
+                                _str_pf += f"{_polygon_formated[i]}, {_polygon_formated[i - 1]} - "
 
-                        _str = _str[:len(_str) - 3]
-                        sql_data.append(_str)
+                        _str_pc = _str_pc[:len(_str_pc) - 2]
+                        _str_pf = _str_pf[:len(_str_pf) - 3]
+
+                        sql_data.append(_str_pc)
+                        sql_data.append(_str_pf)
+                        # break
                         # print(f"{pattern} -> {_str}")
                     else:
+                        sql_data.append('')
                         sql_data.append('')
                         # print(f"{pattern} -> ")
             # flight level
@@ -221,7 +235,8 @@ def main():
                         # print(f"{pattern} -> None")
 
         db.insert(data=sql_data)
-        # print(sql_data)
+        # if len(sql_data) <= 16:
+        # print(len(sql_data))
 
     db.close_conn()
 
