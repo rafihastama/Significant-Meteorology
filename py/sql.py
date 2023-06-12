@@ -14,8 +14,8 @@ class sql:
         try:
             query = "INSERT INTO extracted_sigmet (release_date, release_time, sigmet, status, " \
                     "sigmet_code, cancelation_sigmet_code, valid_date, flight_information, mountain, " \
-                    "mountain_pos, observed_at, polygon, flight_level, va_movement, va_speed, intensitivity)" \
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    "mountain_pos, observed_at, polygon, polygon_extracted, flight_level, va_movement, va_speed, intensitivity)" \
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(query, data)
             self.db.commit()
             print(cursor.rowcount, " records inserted.")
