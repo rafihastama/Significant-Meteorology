@@ -24,57 +24,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-      var map = L.map('map').setView([-2.5489, 118.0149], 5);
+      const map = L.map('map').setView([-2.5489, 118.0149], 5);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
         maxZoom: 18,
       }).addTo(map);
 
-      var certainAreaCoords = [
-        [-7.59, 112.51],
-        [-8.02, 113.02],
-        [-8.13, 113.08],
-        [-8.20, 112.50],
-        [-8.10, 112.46],
-        [-7.59, 112.51]
-        ];
-
-      var certainAreaPolygon = L.polygon(certainAreaCoords, { color: 'red' }).addTo(map);
-
-      var customCoords = [
-        [-8.03, 112.59],
-        [-8.13, 113.01],
-        [-8.15, 112.48],
-        [-8.03, 112.42],
-        [-7.57, 112.50],
-        [-8.03, 112.59]
-      ];
-
-      var customPolygon = L.polygon(customCoords, { color: 'blue' }).addTo(map);
-
-
-      var secondAreaCoords = [
-        [2.51, 136.51],
-        [1.38, 139.20],
-        [0.32, 139.59],
-        [-1.19, 137.46],
-        [-2.26, 135.30],
-        [1.01, 133.30],
-        [2.51, 136.51]
-      ];
-
-      var secondAreaPolygon = L.polygon(secondAreaCoords, { color: 'red' }).addTo(map);
-
-      var acehCoords = [
-      [4.7721, 96.5284], // Aceh Utara
-      [5.2226, 96.5141], // Banda Aceh
-      [4.6957, 97.0157], // Aceh Besar
-      [4.6510, 97.7474], // Aceh Tamiang
-      [3.8545, 97.3340]  // Aceh Selatan
-      ];
-
-      var acehPolygon = L.polygon(acehCoords, { color: 'red' }).addTo(map);
+      /*
+       * WAAF SIGMET 51 VALID 012350/020550 WAAA- WAAF UJUNG PANDANG FIR
+       * VA ERUPTION MT DUKONO PSN N0142 E12754 VA CLD OBS AT 2230Z
+       * WI N0143 E12752 - N0139 E12829 - N0121 E12821 - N 0141 E12751 - N0143 E12752
+       * SFC/FL080 MOV SE 15KT NC=
+       *  */
+      const certainAreaPolygon = L.polygon([[1.72, 127.87], [1.65, 127.87], [1.35, 128.48], [1.68, 128.35]], { color: 'red' }).addTo(map);
 
       const form = document.getElementById("chat-form");
       const chatbox = document.getElementById("chatbox");
