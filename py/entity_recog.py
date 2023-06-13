@@ -1,5 +1,7 @@
 import re
-import sql
+import sys
+import json
+import sql_connector as conn
 from datetime import datetime
 
 
@@ -24,23 +26,21 @@ def main():
                     d = [datetime.strptime(text_.strip()[:15], "%H:%M, %d/%m/%y"), text_[17:]]
                     waaf_data.append(d)
 
-            #     if "VRB" in content or "FCST" in content:
-            #         print(line)
-            #         print(content)
-
-            # line+=1
+                    # if "CNL" in content:
+                    #     # print(content)
 
         waaf_data.sort(reverse=False)
 
     # format date
     for i in range(len(waaf_data)):
         waaf_data[i][0] = waaf_data[i][0].strftime("%H:%M, %d %B %Y")
-        # print(waaf_data[i][1])
+        # # print(waaf_data[i][1])
 
     patterns = {
         "status": r"(CNL)",
         "sigmet_code": r"SIGMET\s(\d{2})",
         "valid_date": r"VALID\s(\d{6}\/\d{6})",
+        "valid_date_sigmet_cancellation": r"CNL\sSIGMET\s\d{2}\s(\d{6}\/\d{6})",
         "flight_information": r"(JAKARTA|UJUNG PANDANG)",
         "mountain": r"MT\s(\w{3,10})",
         "mountain_pos": r"PSN\s([NSEW]\d{4,5}\s[NSEW]\d{4,5})",
@@ -52,9 +52,12 @@ def main():
         "intensitivity": r"(WKN|NC|INTSF)",
     }
     # db
-    db = sql.sql()
+    db = conn.sql()
     n = 1
     for wd in waaf_data:
+        # if n == 20:
+        #     break
+        # print(wd[1])
         date = datetime.strptime(wd[0], '%H:%M, %d %B %Y')
         sql_data = [datetime.strftime(date, "%Y-%m-%d"), datetime.strftime(date, "%H:%M:%S"), wd[1]]
 
@@ -83,9 +86,18 @@ def main():
             # valid date
             if pattern == "valid_date":
                 data = res[0].__str__().split("/")
-                date = f"{datetime.strftime(date, '%d %B %Y')}, {data[0][2:4]}:{data[0][4:]} - {data[1][2:4]}:{data[1][4:]}"
-                sql_data.append(date)
-                # print(f"{pattern} -> {date}")
+                _date = f"Tanggal {data[0][:2]}, {data[0][2:4]}:{data[0][4:]} - {data[1][2:4]}:{data[1][4:]}"
+                sql_data.append(_date)
+                # print(f"{pattern} -> {_date}")
+            # valid date sigmet cancellation
+            if pattern == "valid_date_sigmet_cancellation":
+                if len(res) > 0:
+                    data = res[0].__str__().split("/")
+                    _date = f"Tanggal {data[0][:2]}, {data[0][2:4]}:{data[0][4:]} - {data[1][2:4]}:{data[1][4:]}"
+                    sql_data.append(_date)
+                    # print(f'valid_date_sigmet_cancellation -> {_date}')
+                else:
+                    sql_data.append('')
             # flight information
             if pattern == "flight_information":
                 # sql_data += tuple(res[0])
@@ -102,7 +114,7 @@ def main():
             # mountain pos
             if pattern == "mountain_pos":
                 if _cnl:
-                    sql_data.append(r'')
+                    sql_data.append('')
                     # print(f"{pattern} -> ")
                 else:
                     _data = res[0].__str__().split(" ")
@@ -116,26 +128,6 @@ def main():
                                   f"{'Utara' if 'N' in _data[i] else 'Timur' if 'E' in _data[i] else 'Selatan' if 'S' in _data[i] else 'Barat'}"
 
                         _tmp.append(_format)
-                    # _str = []
-                    # for dt in _data:
-                    #     _str.append(
-                    #         dt.replace(
-                    #             "S" if "S" in dt
-                    #             else "E" if "E" in dt
-                    #             else "N" if "N" in dt
-                    #             else "W",
-                    #             "Lintang Selatan " if "S" in dt
-                    #             else "Bujur Timur " if "E" in dt
-                    #             else "Lintang Utara " if "N" in dt
-                    #             else "Bujur Barat "
-                    #         )
-                    #     )
-                    # _str = ' - '.join(map(str, _str))
-
-                    # _str = ""
-                    # for i in range(len(_data)):
-                    #     if i % 2 == 0:
-                    #         _str += f"{_data[i - 1]} {_data[i]} - "
 
                     _str = " ".join(map(str, _tmp))
                     sql_data.append(_str)
@@ -143,7 +135,7 @@ def main():
             # observed at
             if pattern == "observed_at":
                 if _cnl:
-                    sql_data.append(r'')
+                    sql_data.append('')
                     # print(f"{pattern} -> ")
                 else:
                     _format = f"{res[0][:2]}:{res[0][2:4]}"
@@ -152,8 +144,7 @@ def main():
             # polygon
             if pattern == "polygon":
                 if _cnl:
-                    sql_data.append('')
-                    sql_data.append('')
+                    sql_data.extend(['', ''])
                     # print(f"{pattern} -> ")
                 else:
                     if len(res) > 2:
@@ -175,31 +166,39 @@ def main():
                         for i in range(len(_data)):
                             if i % 2 == 0:
                                 _str_pc += f"[{_polygon_calculated[i]}, {_polygon_calculated[i - 1]}], "
-                                _str_pf += f"{_polygon_formated[i]}, {_polygon_formated[i - 1]} - "
+                                _str_pf += f"{_polygon_formated[i]} {_polygon_formated[i - 1]} - "
 
                         _str_pc = _str_pc[:len(_str_pc) - 2]
                         _str_pf = _str_pf[:len(_str_pf) - 3]
 
-                        sql_data.append(_str_pc)
-                        sql_data.append(_str_pf)
-                        # break
-                        # print(f"{pattern} -> {_str}")
+                        sql_data.extend([_str_pc[:len(_str_pc) - 2], _str_pf[:len(_str_pf) - 3]])
+                        # print(f"{pattern} -> {_str_pc}, {_str_pf}")
                     else:
-                        sql_data.append('')
-                        sql_data.append('')
+                        sql_data.extend(['', ''])
                         # print(f"{pattern} -> ")
             # flight level
             if pattern == "flight_level":
                 if _cnl:
-                    sql_data.append(r'')
+                    sql_data.extend(['', '', ''])
                     # print(f"{pattern} -> ")
                 else:
-                    # print(f"{pattern} -> {res[0]}")
-                    sql_data.append(res[0])
+                    if len(res) > 0:
+                        # feet, meter = None, None
+                        with open('flight_level.json') as file:
+                            json_data = json.load(file)
+                            for jd in json_data:
+                                if str(jd['Flight Level']) == res[0]:
+                                    feet = jd['Feet']
+                                    meter = jd['Meter']
+
+                            # print(f"{pattern} -> {res[0]}, {feet}, {meter}")
+                            sql_data.extend([res[0], feet, meter])
+                    else:
+                        sql_data.extend(['', '', ''])
             # va movement
             if pattern == "va_movement":
                 if _cnl:
-                    sql_data.append(r'')
+                    sql_data.append('')
                     # print(f"{pattern} -> ")
                 else:
                     _str = "Selatan" if "S" in res[0] else "Timur" if "E" in res[0] else "Utara" if "N" in res[
@@ -209,7 +208,7 @@ def main():
             # va speed
             if pattern == "va_speed":
                 if _cnl:
-                    sql_data.append(r'')
+                    sql_data.append('')
                     # print(f"{pattern} -> ")
                 else:
                     if len(res) > 0:
@@ -233,9 +232,12 @@ def main():
                     else:
                         sql_data.append('')
                         # print(f"{pattern} -> None")
-
+        
+        n += 1
+        # print("50"*50)
         db.insert(data=sql_data)
         # if len(sql_data) <= 16:
+        # print(sql_data)
         # print(len(sql_data))
 
     db.close_conn()
