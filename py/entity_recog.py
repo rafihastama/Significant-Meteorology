@@ -180,6 +180,7 @@ def main():
                     else:
                         insert_data.append('')
 
+        print(insert_data)
         db.insert(data=insert_data)
         gc.collect()
 
