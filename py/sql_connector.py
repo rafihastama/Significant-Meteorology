@@ -20,7 +20,20 @@ class sql:
             self.db.commit()
             print(cursor.rowcount, " records inserted.")
         except mysql.connector.Error as err:
-            print("Something went wrong: {}".format(err))
+            print("Something went wrong when inserting data: {}".format(err))
+        finally:
+            cursor.close()
+
+    def update_cancellation_sigmet(self, data: list):
+        cursor = self.db.cursor()
+        try:
+            for d in data:
+                query = f"UPDATE extracted_sigmet SET status = 'Dibatalkan' WHERE valid_date = '{d}'"
+                cursor.execute(query)
+                self.db.commit()
+                print(cursor.rowcount, " records updated.")
+        except mysql.connector.Error as err:
+            print("Something went wrong when updating data: {}".format(err))
         finally:
             cursor.close()
 
