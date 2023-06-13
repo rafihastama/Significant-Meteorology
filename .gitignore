@@ -2,3 +2,5 @@ node_modules
 py/__pycache__/
 py/test.py
 py/csv
+py/cert/*
+!py/cert/DigiCertGlobalRootCA.crt (1).pem

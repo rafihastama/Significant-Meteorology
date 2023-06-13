@@ -24,7 +24,7 @@ def main():
     # format date
     for i in range(len(waaf_data)):
         waaf_data[i][0] = waaf_data[i][0].strftime("%H:%M, %d %B %Y")
-        # # print(waaf_data[i][1])
+
     patterns = {
         "status": r"(CNL)",
         "sigmet_code": r"SIGMET\s(\d{2})",
