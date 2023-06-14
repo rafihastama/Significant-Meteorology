@@ -1,7 +1,4 @@
 node_modules
-py/__pycache__/
-py/test.py
-py/csv
-py/cert/*
-
-!py/cert/certi.pem
+ner/__pycache__/
+ner/test.py
+ner/connection.json
