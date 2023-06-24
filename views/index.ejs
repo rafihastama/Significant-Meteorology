@@ -37,7 +37,17 @@
        * WI N0143 E12752 - N0139 E12829 - N0121 E12821 - N 0141 E12751 - N0143 E12752
        * SFC/FL080 MOV SE 15KT NC=
        *  */
-      const certainAreaPolygon = L.polygon([[1.72, 127.87], [1.65, 127.87], [1.35, 128.48], [1.68, 128.35]], { color: 'red' }).addTo(map);
+      const certainAreaPolygon = L.polygon
+      ([[1.72, 127.87], 
+      [1.65, 127.87], 
+      [1.35, 128.48], 
+      [1.68, 128.35]], 
+      { color: 'red' }).addTo(map);
+
+      // Menambahkan event hover pada poligon
+      certainAreaPolygon.on('click', function (e) {
+        this.bindPopup("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi imperdiet vestibulum lacus eu volutpat.").openPopup();
+      });
 
       const form = document.getElementById("chat-form");
       const chatbox = document.getElementById("chatbox");
