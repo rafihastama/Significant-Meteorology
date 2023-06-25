@@ -4,8 +4,35 @@
     <title>RAW SIGMET WEB</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="/style.css" />
+
+    <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap"
+    />
+    <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Public Sans:wght@800&display=swap"
+    />
+    <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap"
+    />
+    <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
   </head>
   <body>
+    <!-- Navbar -->
+    <nav class ="navbar" id ="navbar">
+      <div class="navbar-nav">
+        <a href="#map">Map</a>
+        <a href="#chatbox">Chat Bot</a>
+        <a href="/">About Us</a>
+      </div>
+    </nav>
+
+    <!-- Content -->
     <div id="map"></div>
 
     <h1>Chatbot Form</h1>
@@ -22,6 +49,11 @@
       <input type="submit" value="Submit" id="submit-btn">
     </form>
 
+    <!-- Footer -->
+    <footer>
+      <p>&copy; Copyright by asd</p>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
       const map = L.map('map').setView([-2.5489, 118.0149], 5);
@@ -37,6 +69,7 @@
        * WI N0143 E12752 - N0139 E12829 - N0121 E12821 - N 0141 E12751 - N0143 E12752
        * SFC/FL080 MOV SE 15KT NC=
        *  */
+
       const certainAreaPolygon = L.polygon
       ([[1.72, 127.87], 
       [1.65, 127.87], 
@@ -44,7 +77,7 @@
       [1.68, 128.35]], 
       { color: 'red' }).addTo(map);
 
-      // Menambahkan event hover pada poligon
+      // Menambahkan event hover pada polygon
       certainAreaPolygon.on('click', function (e) {
         this.bindPopup("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi imperdiet vestibulum lacus eu volutpat.").openPopup();
       });
@@ -59,16 +92,11 @@
         const promptInput = document.getElementById("prompt").value;
         const result = processPrompt(promptInput);
 
-        const chatEntry = document.createElement("p");
-        chatEntry.innerHTML = "<strong>Prompt:</strong> " + promptInput + "<br><strong>Result:</strong> " + result;
-        chatbox.appendChild(chatEntry);
-
         resultInput.value = result;
         document.getElementById("prompt").value = "";
       });
 
       function processPrompt(prompt) {
-        // logicnya disini
         return prompt;
       }
     </script>
