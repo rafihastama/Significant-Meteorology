@@ -2,5 +2,5 @@ node_modules
 ner/__pycache__/
 ner/test.py
 ner/connection.json
-
+chatbot/test.py
 chatbot/__pycache__/
