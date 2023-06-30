@@ -78,7 +78,7 @@
       { color: 'red' }).addTo(map);
 
       // Menambahkan event hover pada polygon
-      certainAreaPolygon.on('click', function (e) {
+      certainAreaPolygon.on('mouseover', function (e) {
         this.bindPopup("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi imperdiet vestibulum lacus eu volutpat.").openPopup();
       });
 
