@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public Sans:wght@800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="icon" href="./favicon.png">
+    <link rel="manifest" href="./app.webmanifest">
+    <title>Significant Meteorology</title>
+  </head>
+  
+  <body>
+
+    <!-- Navbar -->
+    <nav class ="navbar" id ="navbar">
+      <div class="navbar-nav">
+        <a href="#map">Significant Meteorology</a>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div id="map"></div>
+
+    <button id="chat-button">Chat Bot</button>
+
+    <div id="chat-popup">
+      <div class="header">
+        <h1>Chatbot Form</h1>
+        <button id="close-button">&times;</button>
+      </div>
+      <div class="content">
+        <form id="chat-form">
+          <label for="prompt">Prompt:</label>
+          <input type="text" id="prompt" name="prompt" required><br>
+
+          <label for="result">Result:</label>
+          <input type="text" id="result" name="result" readonly><br>
+
+          <input type="submit" value="Submit" id="submit-btn">
+        </form>
+      </div>
+    </div>
+  
+    <!-- Footer -->
+    <footer>
+      <p><strong>Sentinels</strong> Supported by BMKG <img src="./Logo-BMKG.png" alt="Logo BMKG"></p>
+      <p id="sec">© 2023 Sentinels, All Rights Reserved</p> 
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+  </body>
+</html>
