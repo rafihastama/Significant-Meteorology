@@ -34,28 +34,27 @@ class var:
 
     # attribute field
     attribute = {
-        r"kode\ssigmet": "sigmet_code",
-        r"waktu\svalid": "valid_date",
+        r"kode\ssigmet": "sigmet_code as kode_sigmet",
+        r"waktu\svalid": "valid_date as waktu_valid",
         r"lokasi\sdikeluarkannya": "flight_information",
-        r"lokasi\sgunung": "mountain",
-        r"posisi\sgunung": "mountain_pos",
-        r"waktu\sdiobservasi": "observer_at",
-        (r"polygon", r"wilayah\spenyebaran\sabu\svulkanik|titik\spenyebaran\sabu\svulkanik"): "polygon_extracted",
-        r"ketinggian\sabu\svulkanik": "feet, meter",
+        r"lokasi\sgunung": "mountain as lokasi_gunung",
+        r"posisi\sgunung": "mountain_pos as posisi_gunung ",
+        r"waktu\sdiobservasi": "observed_at as diobservasi",
+        (r"polygon", r"wilayah\spenyebaran\sabu\svulkanik|titik\spenyebaran\sabu\svulkanik"): "polygon_extracted as polygon",
+        r"ketinggian\sabu\svulkanik": "feet as kaki, meter",
         r"flight level": "flight_level",
-        r"pergerakan\sabu\svulkanik": "va_movement",
-        "kecepatan\sabu\svulkanik": "va_speed",
-        (r"intensitas\sabu\svulkanik", r"intensitivity"): "intensitivity",
+        r"pergerakan\sabu\svulkanik": "va_movement as arah_abu_vulkanik",
+        "kecepatan\sabu\svulkanik": "va_speed as kecepatan_abu_vulkanik",
+        (r"intensitas\sabu\svulkanik", r"intensitivity"): "intensitivity as intensitas",
         r"status": "status",
-        r"jam\ssigmet\sdikeluarkan": "release_time",
-        r"tanggal\ssigmet\sdikeluarkan": "release_date",
+        r"jam\ssigmet\sdikeluarkan": "release_time as jam_dirilis",
+        r"tanggal\ssigmet\sdikeluarkan": "release_date as tanggal_dirilis",
         r"waktu\sdikeluarkan": {
-            "jam": "release_time",
-            "tanggal": "release_date"
+            "jam": "release_time as jam_dirilis",
+            "tanggal": "release_date as tanggal_dirilis"
         },
         r"seluruh\sfield": "*",
         r"(info\ssigmet\sterkini|info\ssigmet\sterbaru)": "*"
-
     }
 
     condition = {
@@ -101,7 +100,7 @@ class var:
         "current date": {
             "pattern": r"(info\ssigmet\sterkini|info\ssigmet\sterbaru)",
             "attribute": "release_date",
-            "data": "CURDATE()",
+            "data": "DATE(convert_tz(now(), @@session.time_zone, '+07:00'))",
             "operator": "="
         }
     }
@@ -114,7 +113,7 @@ class var:
     # pattern regex untuk pengecekan aturan produksi
     TAMPILKAN = r"^(tampilkan)"
     PATTERN_RULE_TAMPILKAN = {
-        "field": r"tampilkan\s(seluruh\sfield|kode\ssigmet|waktu\svalid|lokasi\sdikeluarkannya|lokasi\sgunung|posisi\sgunung|waktu\sdiobservasi|polygon|flight\slevel|meter|kaki|pergerakan\sabu\svulkanik|kecepatan\sabu\svulkanik|intensitivity|status|jam\ssigmet\sdikeluarkan|tanggal\ssigmet\sdikeluarkan)+",
+        "field": r"tampilkan\s(seluruh\sfield|kode\ssigmet|waktu\svalid|lokasi\sdikeluarkannya|lokasi\sgunung|posisi\sgunung|waktu\sdiobservasi|polygon|flight\slevel|meter|kaki|pergerakan\sabu\svulkanik|kecepatan\sabu\svulkanik|intensitivity|status|jam\ssigmet\sdikeluarkan|tanggal\ssigmet\sdikeluarkan)+\suntuk\s(info\ssigmet\sterkini|info\ssigmet\sterbaru|kode\ssigmet\s\d{2})",
         "ketinggian": r"ketinggian\sawan\sabu\svulkanik\s(diatas|dibawah)\s(\d{,6})\s(meter|kaki)",
         "flight level": r"untuk\sflight\slevel\s(\d{3})|untuk\sfl\s(\d{3})",
         "lintang": r"lintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
