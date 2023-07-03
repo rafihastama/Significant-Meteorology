@@ -115,6 +115,13 @@ function addChatBubble (message, sender, isLoading = false) {
   chatContainer.scrollTop = chatContainer.scrollHeight
 }
 
+function scrollToTop () {
+  document.body.scrollTop = 0
+  document.documentElement.scrollTop = 0
+}
+
+window.scrollToTop = scrollToTop
+
 function showLoadingAnimation () {
   const loadingText = ''
   addChatBubble(loadingText, 'bot', true)

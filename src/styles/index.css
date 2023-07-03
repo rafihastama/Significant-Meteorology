@@ -8,12 +8,12 @@
 * {
   font-family: var(--font-jost);
   text-decoration: none;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   padding: 0;
-  scroll-behavior: smooth;
 }
 
 #map {
