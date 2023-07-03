@@ -11,6 +11,10 @@
   scroll-behavior: smooth;
 }
 
+h1 {
+  margin-left: 210px;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -57,7 +61,7 @@ body {
 
 #chat-popup {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   width: 700px;
   max-height: 500px;
@@ -194,6 +198,7 @@ body {
   padding: 10px;
   border-bottom: 1px solid #ddd;
   border-radius: 8px 8px 0 0;
+  text-align: center;
 }
 
 #chat-popup .content {
