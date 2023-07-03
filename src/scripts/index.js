@@ -4,6 +4,7 @@
 /* eslint-disable func-call-spacing */
 /* eslint-disable no-undef */
 import '../styles/index.css'
+import '../styles/responsive.css'
 import swRegister from './utils/sw-register'
 
 window.addEventListener('load', () => {
