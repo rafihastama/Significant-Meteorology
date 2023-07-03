@@ -19,13 +19,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18
 }).addTo(map)
 
-/*
-   * WAAF SIGMET 51 VALID 012350/020550 WAAA- WAAF UJUNG PANDANG FIR
-   * VA ERUPTION MT DUKONO PSN N0142 E12754 VA CLD OBS AT 2230Z
-   * WI N0143 E12752 - N0139 E12829 - N0121 E12821 - N 0141 E12751 - N0143 E12752
-   * SFC/FL080 MOV SE 15KT NC=
-   *  */
-
 // Fungsi untuk mengambil data koordinat polygon dari API dan menampilkan pada peta
 async function getPolygonFromAPI () {
   try {
@@ -38,6 +31,7 @@ async function getPolygonFromAPI () {
           try {
             // Ubah format string menjadi format array yang valid
             const formattedPolygon = item.polygon
+              .replace(/\s/g, '') // Hilangkan spasi
               .split('],[') // Pisahkan setiap koordinat menjadi array terpisah
               .map((coord) => {
                 const [lat, lng] = coord.split(',').map(parseFloat) // Pisahkan latitude dan longitude, lalu konversi ke angka
@@ -193,4 +187,32 @@ chatForm.addEventListener('submit', function (event) {
   getBotResponse(userMessage) // Memanggil fungsi getBotResponse untuk mendapatkan respons dari API
 
   promptInput.value = ''
+})
+
+const blurPageNav = document.querySelector('.navbar')
+const blurPageMap = document.getElementById('map')
+const blurFooter = document.querySelector('footer')
+
+chatButton.addEventListener('click', () => {
+  blurPageNav.classList.add('blur')
+})
+
+closeButton.addEventListener('click', () => {
+  blurPageNav.classList.remove('blur')
+})
+
+chatButton.addEventListener('click', () => {
+  blurPageMap.classList.add('blur')
+})
+
+closeButton.addEventListener('click', () => {
+  blurPageMap.classList.remove('blur')
+})
+
+chatButton.addEventListener('click', () => {
+  blurFooter.classList.add('blur')
+})
+
+closeButton.addEventListener('click', () => {
+  blurFooter.classList.remove('blur')
 })
