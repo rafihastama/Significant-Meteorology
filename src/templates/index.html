@@ -31,18 +31,14 @@
 
     <div id="chat-popup">
       <div class="header">
-        <h1>Chatbot Form</h1>
+        <h1>Smart Chatbot</h1>
         <button id="close-button">&times;</button>
       </div>
       <div class="content">
+        <div id="chat-container"></div>
         <form id="chat-form">
-          <label for="prompt">Prompt:</label>
-          <input type="text" id="prompt" name="prompt" required><br>
-
-          <label for="result">Result:</label>
-          <input type="text" id="result" name="result" readonly><br>
-
-          <input type="submit" value="Submit" id="submit-btn">
+          <input type="text" id="prompt" name="prompt" required placeholder="Type your message...">
+          <button type="submit" id="submit-btn">Send</button>
         </form>
       </div>
     </div>

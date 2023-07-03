@@ -55,49 +55,130 @@ body {
     margin-left: 35%;
 }
 
-input[type="text"] {
-  width: 50%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-}
-
-input:not([type="range"]):not([type="color"]) {
-  width: 50%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-}
-
-#result {
-  margin-left: 8px;
-}
-
-input[type="submit"] {
-  padding: 10px;
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-
-input[type="submit"]:hover {
-  background-color: #45a049;
-}
-
 #chat-popup {
-  display: none;
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 300px;
+  width: 400px;
+  max-height: 500px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
   z-index: 999;
+  overflow-y: auto;
 }
+
+.chat-bubble {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  max-width: 70%;
+}
+
+.chat-bubble.loading::after {
+  content: '';
+  margin-left: 8px;
+  animation: loading 1s infinite;
+}
+
+@keyframes loading {
+  0%, 100% {
+    content: '...';
+  }
+  50% {
+    content: '.. ';
+  }
+}
+
+.user-chat {
+  background-color: #f5f5f5;
+  align-self: flex-end;
+  animation: slideInFromRight 0.3s ease;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.bot-chat {
+  align-self: flex-start;
+  background-color: #007bff;
+  color: #fff;
+  animation: slideInFromLeft 0.3s ease;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes loadingAnimation {
+  0% {
+    content: '.';
+  }
+  33% {
+    content: '..';
+  }
+  66% {
+    content: '...';
+  }
+  100% {
+    content: '';
+  }
+}
+
+.bot-chat.loading:after {
+  content: '';
+  animation: loadingAnimation 1s infinite;
+}
+
+#chat-form {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#prompt {
+  flex: 1;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#submit-btn {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#submit-btn:hover {
+  background-color: #1a426d;
+}
+
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Mengatur posisi chat bubble ke kiri */
+  justify-content: flex-start;
+  height: 300px;
+  max-height: 500px; /* Atur ketinggian container sesuai kebutuhan Anda */
+  overflow-y: scroll;
+}
+
 
 #chat-popup.active {
   display: block;
@@ -119,7 +200,7 @@ input[type="submit"]:hover {
   bottom: 20px;
   right: 20px;
   padding: 10px 20px;
-  background-color: #4caf50;
+  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -127,8 +208,12 @@ input[type="submit"]:hover {
   z-index: 999;
 }
 
+#chat-button.hidden {
+  display: none;
+}
+
 #chat-button:hover {
-  background-color: #45a049;
+  background-color: #1a426d;
 }
 
 #chat-popup .header {
