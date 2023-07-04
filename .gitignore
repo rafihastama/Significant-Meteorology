@@ -5,3 +5,4 @@ ner/test.py
 ner/connection.json
 chatbot/test.py
 chatbot/__pycache__/
+chatbot/__deleted__/
