@@ -104,6 +104,7 @@ body {
   background-color: #f5f5f5;
   align-self: flex-end;
   animation: slideInFromRight 0.3s ease;
+  margin-right: 5px;
 }
 
 @keyframes slideInFromRight {

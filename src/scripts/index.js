@@ -73,6 +73,9 @@ const closeButton = document.getElementById('close-button')
 const chatForm = document.getElementById('chat-form')
 const promptInput = document.getElementById('prompt')
 const chatContainer = document.getElementById('chat-container')
+const blurPageNav = document.querySelector('.navbar')
+const blurPageMap = document.getElementById('map')
+const blurFooter = document.querySelector('footer')
 const initialMessage = 'Hai, apa yang ingin kamu ketahui tentang kondisi SIGMET ?'
 addChatBubble(initialMessage, 'bot')
 
@@ -84,6 +87,30 @@ chatButton.addEventListener('click', function () {
 
 closeButton.addEventListener('click', function () {
   chatPopup.style.display = 'none'
+})
+
+chatButton.addEventListener('click', () => {
+  blurPageNav.classList.add('blur')
+})
+
+closeButton.addEventListener('click', () => {
+  blurPageNav.classList.remove('blur')
+})
+
+chatButton.addEventListener('click', () => {
+  blurPageMap.classList.add('blur')
+})
+
+closeButton.addEventListener('click', () => {
+  blurPageMap.classList.remove('blur')
+})
+
+chatButton.addEventListener('click', () => {
+  blurFooter.classList.add('blur')
+})
+
+closeButton.addEventListener('click', () => {
+  blurFooter.classList.remove('blur')
 })
 
 function addChatBubble (message, sender, isLoading = false) {
@@ -106,10 +133,19 @@ function addChatBubble (message, sender, isLoading = false) {
     chatBubble.classList.add('bot-chat')
   }
 
-  const chatText = document.createElement('span')
-  chatText.textContent = message
+  if (!isLoading && sender === 'bot') {
+    const lines = message.split('\n')
+    lines.forEach((line) => {
+      const chatBubbleLine = document.createElement('div')
+      chatBubbleLine.textContent = line
+      chatBubble.appendChild(chatBubbleLine)
+    })
+  } else {
+    const chatText = document.createElement('span')
+    chatText.textContent = message
+    chatBubble.appendChild(chatText)
+  }
 
-  chatBubble.appendChild(chatText)
   chatContainer.appendChild(chatBubble)
 
   // Scroll otomatis ke bagian bawah chat history
@@ -138,7 +174,19 @@ function removeLoadingAnimation () {
 function formatBotResponse (data) {
   let formattedResponse = ''
   for (const key in data) {
-    formattedResponse += `${key}: ${data[key]}\n`
+    const formattedKey = key.replaceAll('_', ' ')
+    let formattedValue = data[key]
+
+    // Special formatting for key
+    if (key === 'data_polygon') {
+      formattedValue = formattedValue.replaceAll(' - ', '\n')
+    }
+
+    if (key === 'polygon') {
+      formattedValue = formattedValue.replaceAll(' - ', '\n')
+    }
+
+    formattedResponse += `${formattedKey}: ${formattedValue}\n`
   }
   return formattedResponse
 }
@@ -195,32 +243,4 @@ chatForm.addEventListener('submit', function (event) {
   getBotResponse(userMessage) // Memanggil fungsi getBotResponse untuk mendapatkan respons dari API
 
   promptInput.value = ''
-})
-
-const blurPageNav = document.querySelector('.navbar')
-const blurPageMap = document.getElementById('map')
-const blurFooter = document.querySelector('footer')
-
-chatButton.addEventListener('click', () => {
-  blurPageNav.classList.add('blur')
-})
-
-closeButton.addEventListener('click', () => {
-  blurPageNav.classList.remove('blur')
-})
-
-chatButton.addEventListener('click', () => {
-  blurPageMap.classList.add('blur')
-})
-
-closeButton.addEventListener('click', () => {
-  blurPageMap.classList.remove('blur')
-})
-
-chatButton.addEventListener('click', () => {
-  blurFooter.classList.add('blur')
-})
-
-closeButton.addEventListener('click', () => {
-  blurFooter.classList.remove('blur')
 })
