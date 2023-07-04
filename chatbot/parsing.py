@@ -1,4 +1,5 @@
 from var import var
+from datetime import datetime
 import re
 
 
@@ -40,7 +41,6 @@ class Parsing:
                     data_condition["con"] = var.condition.get(key_condition)
                     data_condition["str_a"] = _string[string_location[0]:]
                     data_condition['str_b'] = _string[:string_location[0]]
-
         # find selected field
         for key_attribute in var.attribute:
             if isinstance(key_attribute, tuple):
@@ -54,60 +54,41 @@ class Parsing:
                             selected_field.append(value)
                     else:
                         selected_field.append(var.attribute.get(key_attribute))
-
-        print(f"selected field -> {selected_field}")
-
         # find condition field
-        for key_attribute in var.attribute_condition:
-            if isinstance(key_attribute, tuple):
-                for key_data in key_attribute:
-                    if re.search(key_data, data_condition["str_a"]):
-                        data_condition["ac"].append(var.attribute_condition.get(key_attribute))
-            else:
-                if re.search(key_attribute, data_condition["str_a"]):
-                    if isinstance(var.attribute_condition.get(key_attribute), dict):
-                        for _, value in var.attribute_condition.get(key_attribute).items():
-                            data_condition["ac"].append(var.attribute_condition.get(key_attribute))
-                    else:
-                        data_condition["ac"].append(var.attribute_condition.get(key_attribute))
-        # find data
-        for key_data in var.data:
-            if isinstance(var.data.get(key_data), dict):
-                if re.search(var.data.get(key_data).get("pattern"), data_condition['str_a']):
-                    if key_data == "current date":
-                        value = var.data.get(key_data).get("data")
-                    else:
-                        value = re.search(var.data.get(key_data).get("data"), data_condition["str_a"]).group()
-                    operator = var.data.get(key_data).get("operator")
-                    data_condition["d"].append(value)
-                    data_condition["op"].append(operator)
-            else:
-                _search = re.search(var.data.get(key_data), data_condition['str_a'])
-                if _search:
-                    if key_data == "lintang":
-                        data_condition["d"].append(self.__format_coordinates__(_search.group().__str__()))
-                    else:
-                        for result in _search.groups():
+        for key, value in var.pattern_matching_attribute.items():
+            # print(value)
+            if re.search(value.get("pattern"), data_condition["str_a"]):
+                data_condition["ac"].append(value.get("attribute"))
+                # find data
+                data = []
+                if key == "data terbaru":
+                    data.append(value.get("data"))
+                elif key == "tanggal dikeluarkan":
+                    date = re.search(value.get("data"), data_condition["str_a"]).group()
+                    data.append(f"'{datetime.strptime(date.__str__(), '%d-%m-%Y').date()}'")
+                elif key == "lintang":
+                    search = re.search(value.get("data"), data_condition['str_a'])
+                    if search:
+                        data.append(f"'{self.__format_coordinates__(search.group().__str__())}'")
+                else:
+                    re_value = re.search(value.get("data"), data_condition["str_a"])
+                    if re_value:
+                        for result in re_value.groups():
                             if result is not None:
-                                data_condition["d"].append(result)
-        # find operator
-        for key_operator in var.operator:
-            if re.search(key_operator, data_condition["str_a"]):
-                operator = var.operator.get(key_operator)
+                                data.append(result)
+                data_condition["d"].append(data)
+                # find operator:
+                # print(value.get('default_operator'))
+                operator = ""
+                if value.get("default_operator") is None:
+                    for op_key, op_val in var.operator.items():
+                        if op_val not in data_condition["op"]:
+                            if re.search(op_key, data_condition["str_a"]):
+                                operator = op_val
+                                break
+                else:
+                    operator = value.get("default_operator")
                 data_condition["op"].append(operator)
-
-        # check if in str b have pattern for current date
-        for key, value in var.attribute_condition.items():
-            if value == "release_date" and re.search(key, data_condition["str_b"]):
-                data_condition["ac"].append(value)
-                data_condition["op"].append(var.data.get("current date").get("operator"))
-                data_condition["d"].append(var.data.get("current date").get("data"))
-
-        # print(f"condition -> {data_condition['con']}")
-        print(f"attribute condition -> {data_condition['ac']}")
-        print(f"operator -> {data_condition['op']}")
-        print(f"data -> {data_condition['d']}")
-
         return selected_field, data_condition["ac"], data_condition["op"], data_condition["d"]
 
     def __pattern_matching_input__(self, Pattern: dict, _string: str, rule: str):
@@ -117,7 +98,6 @@ class Parsing:
                 print(f'Parsing -> {rule}')
                 return self.__find_attribute__(_string, field)
 
-        # put error here
         self.rule_error = True
         self.rule = rule
         return False
