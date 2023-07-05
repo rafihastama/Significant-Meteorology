@@ -41,6 +41,7 @@ class Parsing:
                     data_condition["con"] = var.condition.get(key_condition)
                     data_condition["str_a"] = _string[string_location[0]:]
                     data_condition['str_b'] = _string[:string_location[0]]
+                    break
         # find selected field
         for key_attribute in var.attribute:
             if isinstance(key_attribute, tuple):
@@ -56,8 +57,9 @@ class Parsing:
                         selected_field.append(var.attribute.get(key_attribute))
         # find condition field
         for key, value in var.pattern_matching_attribute.items():
-            # print(value)
-            if re.search(value.get("pattern"), data_condition["str_a"]):
+            match = re.search(value.get("pattern"), data_condition["str_a"])
+            if match:
+                # find attribute condition
                 data_condition["ac"].append(value.get("attribute"))
                 # find data
                 data = []
@@ -77,19 +79,27 @@ class Parsing:
                             if result is not None:
                                 data.append(result)
                 data_condition["d"].append(data)
-                # find operator:
-                # print(value.get('default_operator'))
+                # find operator
+                operator_str = match.group()
                 operator = ""
                 if value.get("default_operator") is None:
                     for op_key, op_val in var.operator.items():
-                        if op_val not in data_condition["op"]:
-                            if re.search(op_key, data_condition["str_a"]):
-                                operator = op_val
-                                break
+                        if re.search(op_key, operator_str):
+                            operator = op_val
+                            break
                 else:
                     operator = value.get("default_operator")
                 data_condition["op"].append(operator)
-        return selected_field, data_condition["ac"], data_condition["op"], data_condition["d"]
+
+        # check if in str b have pattern for current date
+        for key, value in var.pattern_matching_attribute.items():
+            if key == "data terbaru" and re.search(value.get("pattern"), data_condition["str_b"]):
+                data_condition["ac"].append(value.get("attribute"))
+                data_condition["op"].append(value.get("default_operator"))
+                data_condition["d"].append([value.get("data")])
+
+        n = (len(data_condition["ac"]) + len(data_condition["op"]) + len(data_condition["d"])) / 3
+        return selected_field, data_condition["ac"], data_condition["op"], data_condition["d"], n
 
     def __pattern_matching_input__(self, Pattern: dict, _string: str, rule: str):
         for field in Pattern:

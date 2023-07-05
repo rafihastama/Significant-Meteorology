@@ -1,8 +1,8 @@
 import re
-
 from var import var
 from parsing import Parsing
 from error import Error
+from translator_test import Translator
 
 
 def preprocessing_input(_input: str):
@@ -74,7 +74,7 @@ def test():
 
 
 def main():
-    text = "Tampilkan info sigmet terkini dengan waktu valid dari jam 09:00 hingga 12:12 dan info sigmet terkini dan kode sigmet 12"
+    text = "Tampilkan lokasi gunung, posisi gunung dan polygon untuk info sigmet terkini dan kode sigmet 12 dan wilayah penyebaran abu vulkanik berada di lintang n1234 s12345"
     text = preprocessing_input(text)
     print(f'Scanner -> {text}')
 
@@ -96,14 +96,14 @@ def main():
     parsing = Parsing()
     parsing_input = parsing.parsing_input(_str)
     # db = sql_connection.sql()
-
+    # print(_str)
     if parsing_input:
         # translator
-        attribute, attribute_condition, operator, attribute_data = parsing_input
-        print(f'attribute: {attribute}\nattribute condition: {attribute_condition}\nopertor: {operator}\ndata: {attribute_data}\n')
-        # translator = Translator(attribute, attribute_condition, operator, attribute_data)
-        # query = translator.translate_input_into_query()
-        # print(f'query -> {query}')
+        attribute, attribute_condition, operator, attribute_data, data_length = parsing_input
+        print(f'attribute: {attribute}\nattribute condition: {attribute_condition}\nopertor: {operator}\ndata: {attribute_data}\ndata length: {data_length}')
+        translator = Translator(attribute, attribute_condition, operator, attribute_data, data_length)
+        query = translator.translate_input_into_query()
+        print(f'translator -> {query}')
 
         # fetched_data = db.search(query=query)
         # if len(fetched_data) > 0:

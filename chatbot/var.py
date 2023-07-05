@@ -6,7 +6,7 @@ class var:
         'terkini', 'status', 'seluruh', 'field', 'fl', 'date', 'lebih', 'kurang', 'dari', 'lokasi', 'titik',
         'flight information', 'gunung', 'posisi', 'gunung', 'diobservasi', 'polygon', 'flight', 'level', 'waktu',
         'meter', 'feet', 'movement', 'speed', 'intensitivity', 'status', 'kaki', 'meter', 'lintang', 'jam', 'hingga',
-        'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal'
+        'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal', 'sama'
     ]
 
     IGNORE_PATTERN = [
@@ -38,7 +38,7 @@ class var:
         r"waktu\svalid": "valid_date as waktu_valid",
         r"lokasi\sdikeluarkannya": "flight_information",
         r"lokasi\sgunung": "mountain as lokasi_gunung",
-        r"posisi\sgunung": "mountain_pos as posisi_gunung ",
+        r"posisi\sgunung": "mountain_pos as posisi_gunung",
         r"waktu\sdiobservasi": "observed_at as diobservasi",
         (r"polygon", r"wilayah\spenyebaran\sabu\svulkanik|titik\spenyebaran\sabu\svulkanik"): "polygon_extracted as polygon",
         r"ketinggian\sabu\svulkanik": "feet as kaki, meter",
@@ -60,6 +60,9 @@ class var:
     condition = {
         (r'(untuk)', r'dengan', r'yang'): "WHERE"
     }
+
+    ignore_condition = r'^((?!sama\sdengan).)*$'
+
     operator = {
         r"diatas": ">",
         r"dibawah": "<",
@@ -99,13 +102,13 @@ class var:
             "default_operator": "valid_date"
         },
         "ketinggian dalam bentuk meter": {
-            "pattern": r"ketinggian\sawan\sabu\svulkanik\s\w+\s\d+\s(meter)",
+            "pattern": r"ketinggian\sawan\sabu\svulkanik\s(diatas|dibawah|sama\sdengan)\s\d+\s(meter)",
             "attribute": "meter",
             "data": r"(\d{3,6})\smeter",
             "default_operator": None
         },
         "ketinggian dalam bentuk kaki": {
-            "pattern": r"ketinggian\sawan\sabu\svulkanik\s\w+\s\d+\s(kaki)",
+            "pattern": r"ketinggian\sawan\sabu\svulkanik\s(diatas|dibawah|sama\sdengan)\s\d+\s(kaki)",
             "attribute": "feet",
             "data": r"(\d{3,6})\skaki",
             "default_operator": None
