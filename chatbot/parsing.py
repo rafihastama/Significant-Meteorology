@@ -9,23 +9,31 @@ class Parsing:
         self.rule = None
         self.default_error = None
 
-    def __format_coordinates__(self, coords: str):
+    def __format_coordinates__(self, coords: str, wind_dir: bool = False):
         arr = ''.join(map(str, coords)).split(" ")
         _arr = []
+        _str_tmp = []
         for i in range(len(arr)):
             degree = arr[i][1:len(arr[i]) - 2]
             minute = arr[i][len(arr[i]) - 2:]
             calc = float("{:.2f}".format(float(degree) + (float(minute) / 60.0)))
+            if wind_dir:
+                _format = f"{calc}\N{DEGREE SIGN} " \
+                          f"{'Utara' if 'N' in coords[i] else 'Timur' if 'E' in coords[i] else 'Selatan' if 'S' in coords[i] else 'Barat'}"
+                _str_tmp.append(_format)
+
             _arr.append(calc)
+
+        if wind_dir:
+            return " ".join(map(str, _str_tmp))
 
         return f"%{', '.join(map(str, _arr))}%"
 
     def __find_attribute__(self, _string: str, field: str):
-        _field = field
         selected_field = []
         data_condition = {
-            "str_b": "",  # string befor keyword cond
-            "str_a": "",  # string after keyword cond
+            "str_b": "",  # string before where clause (condition)
+            "str_a": "",  # string after where clause (condition)
             "con": "",  # value : where
             "ac": [],  # attribute condition
             "d": [],  # data
@@ -72,8 +80,22 @@ class Parsing:
                     search = re.search(value.get("data"), data_condition['str_a'])
                     if search:
                         data.append(f"'{self.__format_coordinates__(search.group().__str__())}'")
+                elif key == "status sigmet" \
+                        or key == "flight information" \
+                        or key == "mountain location" \
+                        or key == "intensitivity":
+                    _str = re.search(value.get("data"), data_condition["str_a"]).group()
+                    data.append(f"'%{_str}%'")
+                elif key == "mountain position":
+                    search = re.search(value.get("data"), data_condition['str_a'])
+                    if search:
+                        data.append(f"'{self.__format_coordinates__(search.group().__str__(), wind_dir=True)}'")
+                elif key == "volcanic ash movement":
+                    _str = re.search(value.get("data"), data_condition["str_a"]).group()
+                    data.append(f"'{_str}'")
                 else:
                     re_value = re.search(value.get("data"), data_condition["str_a"])
+                    print(re_value.groups())
                     if re_value:
                         for result in re_value.groups():
                             if result is not None:
