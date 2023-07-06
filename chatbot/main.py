@@ -2,7 +2,7 @@ import re
 from var import var
 from parsing import Parsing
 from error import Error
-from translator_test import Translator
+from translator import Translator
 
 
 def preprocessing_input(_input: str):
@@ -73,16 +73,19 @@ def test():
         print("=" * 100, end='\n')
 
 
-def main():
-    text = "Tampilkan lokasi gunung, posisi gunung dan polygon untuk info sigmet terkini dan kode sigmet 12 dan wilayah penyebaran abu vulkanik berada di lintang n1234 s12345"
+def main(input_kalimat):
+    text = input_kalimat
     text = preprocessing_input(text)
     print(f'Scanner -> {text}')
 
     # token
     in_token = []
+    deleted_token = []  # test
     for t in text:
         if any(_str in t for _str in var.KATA_YANG_TIDAK_DIABAIKAN):
             in_token.append(t)
+        else:
+            deleted_token.append(t)
 
         for pattern in var.IGNORE_PATTERN:
             if len(re.findall(pattern, t)) > 0:
@@ -90,13 +93,14 @@ def main():
                 break
 
     print(f"Token -> {in_token}")
+    print(f"Deleted token -> {deleted_token}")
 
     # parsing
     _str = ' '.join(map(str, in_token))
     parsing = Parsing()
     parsing_input = parsing.parsing_input(_str)
     # db = sql_connection.sql()
-    # print(_str)
+    print(_str)
     if parsing_input:
         # translator
         attribute, attribute_condition, operator, attribute_data, data_length = parsing_input
@@ -123,7 +127,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-
-    # test()
-    # sys.exit()
+    input_kalimat = "tampilkan info sigmet terkini dengan kecepatan awan abu vulkaniknya diatas 31.23 km/s"
+    main(input_kalimat)
