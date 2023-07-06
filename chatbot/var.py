@@ -4,33 +4,35 @@ class var:
         'kapan', 'dan', 'kecepatan', 'kearah', 'lama', 'dikeluarkan', 'apa', 'berada', 'terbaru', 'bergerak',
         'yang', 'diobservasi', 'mana', 'intensitas', 'info', 'abu', 'vulkanik', 'terbaru', 'penyebaran',
         'terkini', 'status', 'seluruh', 'field', 'fl', 'date', 'lebih', 'kurang', 'dari', 'lokasi', 'titik',
-        'flight information', 'gunung', 'posisi', 'gunung', 'diobservasi', 'polygon', 'flight', 'level', 'waktu',
-        'meter', 'feet', 'movement', 'speed', 'intensitivity', 'status', 'kaki', 'meter', 'lintang', 'jam', 'hingga',
-        'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal', 'sama'
+        'flight information', 'gunung', 'posisi', 'gunung', 'polygon', 'flight', 'level', 'waktu',
+        'meter', 'feet', 'movement', 'speed', 'intensitivity', 'kaki', 'meter', 'lintang', 'jam', 'hingga',
+        'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal', 'sama', 'dibatalkan', 'tidak', 'ada', 'perubahan', 'ujung', 'padang',
+        'dukono', 'ibu', 'karangetan', 'krakatau', 'lewotolo', 'semeru', 'antara', 'intensitifitas', 'melemah',
+        'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/s'
     ]
 
     IGNORE_PATTERN = [
-        r'[nsew]\d{4,5}', r'\d{2,5}'
+        r'[nsew]\d{4,5}', r'\d{2,5}', r'((\d{,2}\.\d{,2})|(\d{1,2}))'
     ]
 
-    DATATABLE_TO_FIELD = {
-        'kode sigmet': 'sigmet_code',
-        'waktu valid': 'valid_date',
-        'flight information': 'flight_information',
-        'lokasi gunung': 'mountain',
-        'posisi gunung': 'mountain_pos',
-        'waktu diobservasi': 'observed_at',
-        'polygon': 'polygon_extracted',
-        'flight level': 'flight_level',
-        'ketinggian dalam bentuk meter': 'meter',
-        'ketinggian dalam bentuk feet': 'feet',
-        'pergerakan abu vulkanik': 'va_movement',
-        'kecepatan abu vulkanik': 'va_speed',
-        'intensitivity': 'intensitivity',
-        'status': 'status',
-        'jam sigmet dikeluarkan': 'release_time',
-        'tanggal sigmet dikeluarkan': 'release_date'
-    }
+    # DATATABLE_TO_FIELD = {
+    #     'kode sigmet': 'sigmet_code',
+    #     'waktu valid': 'valid_date',
+    #     'flight information': 'flight_information',
+    #     'lokasi gunung': 'mountain',
+    #     'posisi gunung': 'mountain_pos',
+    #     'waktu diobservasi': 'observed_at',
+    #     'polygon': 'polygon_extracted',
+    #     'flight level': 'flight_level',
+    #     'ketinggian dalam bentuk meter': 'meter',
+    #     'ketinggian dalam bentuk feet': 'feet',
+    #     'pergerakan abu vulkanik': 'va_movement',
+    #     'kecepatan abu vulkanik': 'va_speed',
+    #     'intensitivity': 'intensitivity',
+    #     'status': 'status',
+    #     'jam sigmet dikeluarkan': 'release_time',
+    #     'tanggal sigmet dikeluarkan': 'release_date'
+    # }
 
     # attribute field
     attribute = {
@@ -67,7 +69,6 @@ class var:
         r"diatas": ">",
         r"dibawah": "<",
         r"sama\sdengan": "=",
-        r"lintang": "LIKE",
     }
 
     pattern_matching_attribute = {
@@ -96,7 +97,7 @@ class var:
             "default_operator": "="
         },
         "waktu valid": {
-            "pattern": r"(\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2})|(\d{2}:\d{2})\s-\s(\d{2}:\d{2})",
+            "pattern": r"waktu\svalid\sdari\sjam\s((\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2}))",
             "attribute": ['from_valid_date', 'to_valid_date'],
             "data": r"(\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2})|(\d{2}:\d{2})\s-\s(\d{2}:\d{2})",
             "default_operator": "valid_date"
@@ -117,15 +118,57 @@ class var:
             "pattern": r"lintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
             "attribute": "polygon",
             "data": r"([nsew]\d{4,5}\s[nsew]\d{4,5})",
-            "default_operator": None
+            "default_operator": "LIKE"
         },
+        "status sigmet": {
+            "pattern": r"status\ssigmet\s(dibatalkan|tidak\sada\sperubahan)",
+            "attribute": "status",
+            "data": r"(dibatalkan|tidak\sada\sperubahan)",
+            "default_operator": "LIKE"
+        },
+        "flight information": {
+            "pattern": r"sigmet\syang\sdikeluarkan\sdari\sflight\sinformation\s(ujung\spadang|jakarta)",
+            "attribute": "flight_information",
+            "data": r"(ujung\spadang|jakarta)",
+            "default_operator": "LIKE"
+        },
+        "mountain location": {
+            "pattern": r"sigmet\syang\sberada\sdigunung\s(dukono|ibu|karangetan|krakatau|lewotolo|semeru)",
+            "attribute": "mountain",
+            "data": r"(dukono|ibu|karangetan|krakatau|lewotolo|semeru)",
+            "default_operator": "LIKE"
+        },
+        "mountain position": {
+            "pattern": r"sigmet\syang\sberada\sdigunung\sdengan\sposisi\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
+            "attribute": "mountain_pos",
+            "data": r"([nsew]\d{4,5}\s[nsew]\d{4,5})",
+            "default_operator": "LIKE"
+        },
+        "observed at": {
+            "pattern": r"sigmet\syang\sdiobservasi\santara\sjam\s(\d{2}:\d{2})\s(\d{2}:\d{2})|jam\s(\d{2}:\d{2})\shingga\s(\d{2}:\d{2})",
+            "attribute": "observed_at",
+            "data": r"(\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2})|(\d{2}:\d{2})\s-\s(\d{2}:\d{2})",
+            "default_operator": "valid_date"
+        },
+        "intensitivity": {
+            "pattern": r"status\sintensitifitas\sabu\svulkanik\s(melemah|intensif|tidak\sada\sperubahan)",
+            "attribute": "intensitivity",
+            "data": r"(melemah|intensif|tidak\sada\sperubahan)",
+            "default_operator": "LIKE"
+        },
+        "volcanic ash movement": {
+            "pattern": r"awan\sabu\svulkaniknya\sbergerak\skearah\s(barat\slaut|barat|barat\sdaya|selatan|tenggara|timur\slaut|timur|utara)",
+            "attribute": "va_movement",
+            "data": r"(barat\slaut|barat\sdaya|barat|selatan|tenggara|timur\slaut|timur|utara)",
+            "default_operator": "="
+        },
+        "volcanic ash speed": {
+            "pattern": r"kecepatan\sawan\sabu\svulkaniknya\s(diatas|dibawah|sama\sdengan)\s((\d{,2}\.\d{,2})|(\d{1,2}))\skm\/s",
+            "attribute": "va_speed",
+            "data": r"((\d{,2}\.\d{,2})|(\d{1,2}))",
+            "default_operator": None
+        }
     }
-
-    """
-        pattern datatale:
-            (info/ssigmet/sterkini)|(info/ssigmet/sterbaru)|(sigmet\s\d{,2})
-    """
-
     # pattern regex untuk pengecekan aturan produksi
     TAMPILKAN = r"^(tampilkan)"
     PATTERN_RULE_TAMPILKAN = {
@@ -133,8 +176,16 @@ class var:
         "ketinggian": r"ketinggian\sawan\sabu\svulkanik\s(diatas|dibawah)\s(\d{,6})\s(meter|kaki)",
         "flight level": r"untuk\sflight\slevel\s(\d{3})|untuk\sfl\s(\d{3})",
         "lintang": r"lintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
-        "valid": r"jam\s(\d{2}:\d{2})\s(\d{2}:\d{2})|jam\s(\d{2}:\d{2})\shingga\s(\d{2}:\d{2})",
+        "valid": r"waktu\svalid\sdari\sjam\s((\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2}))",
         "penyebaran abu vulkanik": r"wilayah\spenyebaran\sabu\svulkanik\s\w+\s(info\ssigmet\sterkini|info\ssigmet\sterbaru|kode\ssigmet\s\d{2}|tanggal\s(\d{2}\-\d{2}\-\d{4}))",
+        "status": r"status\ssigmet\s(dibatalkan|tidak\sada\sperubahan)",
+        "flight information": r"sigmet\syang\sdikeluarkan\sdari\sflight\sinformation\s(ujung\spadang|jakarta)",
+        "mountain location": r"sigmet\syang\sberada\sdigunung\s(dukono|ibu|karangetan|krakatau|lewotolo|semeru)",
+        "mountain position": r"sigmet\syang\sberada\sdigunung\sdengan\sposisi\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
+        "observed": r"sigmet\syang\sdiobservasi\santara\sjam\s((\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2}))",
+        "intesitivity": r"status\sintensitifitas\sabu\svulkanik\s(melemah|intensif|tidak\sada\sperubahan)",
+        "volcanic ash movement": r"awan\sabu\svulkaniknya\sbergerak\skearah\s(barat\slaut|barat\sdaya|barat|selatan|tenggara|timur\slaut|timur|utara)",
+        "volcanic ash speed": r"kecepatan\sawan\sabu\svulkaniknya\s(diatas|dibawah|sama\sdengan)\s((\d{,2}\.\d{,2})|(\d{1,2}))\skm\/s",
     }
 
     BERAPA = r"^(berapa)"
