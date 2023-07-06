@@ -191,7 +191,7 @@ function formatBotResponse (data) {
       formattedValue = formattedValue.replaceAll(' - ', '\n')
     }
 
-    if (key === 'polygon ') {
+    if (key === 'polygon' && data[key] != null) {
       formattedValue = formattedValue.replaceAll(' - ', '\n')
     }
 
