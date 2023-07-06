@@ -73,7 +73,7 @@ body {
   overflow-y: auto;
 }
 
-.navbar.blur, #map.blur, footer.blur {
+.navbar.blur, #map.blur, footer.blur, #kompas.blur {
   filter: blur(20px);
 }
 
@@ -98,6 +98,20 @@ body {
   50% {
     content: '.. ';
   }
+}
+
+#kompas {
+  position: absolute;
+  bottom: 56%;
+  left: 76%;
+  z-index: 999;
+}
+
+#kompas img {
+  margin: 0;
+  padding: 0;
+  width: 300px;
+  height: 200px;
 }
 
 .user-chat {

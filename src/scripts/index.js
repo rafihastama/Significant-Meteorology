@@ -75,6 +75,7 @@ const promptInput = document.getElementById('prompt')
 const chatContainer = document.getElementById('chat-container')
 const blurPageNav = document.querySelector('.navbar')
 const blurPageMap = document.getElementById('map')
+const blurPageKompas = document.getElementById('kompas')
 const blurFooter = document.querySelector('footer')
 const initialMessage = 'Hai, apa yang ingin kamu ketahui tentang kondisi SIGMET ?'
 addChatBubble(initialMessage, 'bot')
@@ -103,6 +104,14 @@ chatButton.addEventListener('click', () => {
 
 closeButton.addEventListener('click', () => {
   blurPageMap.classList.remove('blur')
+})
+
+chatButton.addEventListener('click', () => {
+  blurPageKompas.classList.add('blur')
+})
+
+closeButton.addEventListener('click', () => {
+  blurPageKompas.classList.remove('blur')
 })
 
 chatButton.addEventListener('click', () => {
@@ -178,11 +187,11 @@ function formatBotResponse (data) {
     let formattedValue = data[key]
 
     // Special formatting for key
-    if (key === 'data_polygon') {
+    if (key === 'data polygon') {
       formattedValue = formattedValue.replaceAll(' - ', '\n')
     }
 
-    if (key === 'polygon') {
+    if (key === 'polygon ') {
       formattedValue = formattedValue.replaceAll(' - ', '\n')
     }
 
