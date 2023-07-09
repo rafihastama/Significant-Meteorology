@@ -23,7 +23,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Fungsi untuk mengambil data koordinat polygon dari API dan menampilkan pada peta
 async function getPolygonFromAPI () {
   try {
-    const response = await fetch('https://kkp-chatbot-test.azurewebsites.net/')
+    const response = await fetch('http://127.0.0.1:5000/')
     const data = await response.json()
 
     if (Array.isArray(data)) {
@@ -254,9 +254,9 @@ closeButton.addEventListener('click', function () {
 
 async function getBotResponse (message) {
   const apiUrl = `
-  https://sigmet-chatbot.azurewebsites.net/chat?question=${encodeURIComponent(message)}
+  http://127.0.0.1:5000/chat?question=${encodeURIComponent(message)}
   `
-
+  console.log(apiUrl)
   try {
     showLoadingAnimation() // Menampilkan animasi "..." saat loading
 
@@ -275,9 +275,18 @@ async function getBotResponse (message) {
       // Jika data adalah objek dengan key 'answer', itu berarti respons hanya satu hasil
       const botResponse = formatBotResponse(data)
       addChatBubble(botResponse, 'bot')
+    } else if (data.error) {
+      const err_msg = "Sepertinya ada kesalahan dengan kalimat yang anda inputkan. Berikut beberapa contohh kalimat yang dapat di proses:"
+      addChatBubble(err_msg, 'bot')
+
+      const err_datas = data['error'].replace(/(({|}|')+)/g, "").trim().split(", ")
+      console.log(err_datas)
+      err_datas.forEach((err)=>{
+        addChatBubble(err, 'bot')
+      })
     } else {
       // Jika data tidak ada
-      addChatBubble('Data yang anda input tidak dapat diproses', 'bot')
+      addChatBubble(data, 'bot')
     }
   } catch (error) {
     console.error('Error fetching bot response:', error)

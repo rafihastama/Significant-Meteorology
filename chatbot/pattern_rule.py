@@ -144,7 +144,7 @@ class var:
             "default_operator": "="
         },
         "volcanic ash speed": {
-            "pattern": r"kecepatan\sawan\sabu\svulkaniknya\s(diatas|dibawah|sama\sdengan)\s((\d{,2}\.\d{,2})|(\d{1,2}))\skm\/s",
+            "pattern": r"kecepatan\sawan\sabu\svulkaniknya\s(diatas|dibawah|sama\sdengan)\s((\d{,2}\.\d{,2})|(\d{1,2}))\skm\/h",
             "attribute": "va_speed",
             "data": r"((\d{,2}\.\d{,2})|(\d{1,2}))",
             "default_operator": None
@@ -166,7 +166,7 @@ class var:
         "observed": r"diobservasi\santara\sjam\s((\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2}))",
         "intesitivity": r"status\sintensitas\sabu\svulkanik\s(melemah|intensif|tidak\sada\sperubahan)",
         "volcanic ash movement": r"awan\sabu\svulkaniknya\sbergerak\skearah\s(barat\slaut|barat\sdaya|barat|selatan|tenggara|timur\slaut|timur|utara)",
-        "volcanic ash speed": r"kecepatan\sawan\sabu\svulkaniknya\s(diatas|dibawah|sama\sdengan)\s((\d{,2}\.\d{,2})|(\d{1,2}))\skm\/s",
+        "volcanic ash speed": r"kecepatan\sawan\sabu\svulkaniknya\s(diatas|dibawah|sama\sdengan)\s((\d{,2}\.\d{,2})|(\d{1,2}))\skm\/h",
     }
 
     BERAPA = r"^(berapa)"

@@ -107,12 +107,12 @@ def main(input_kalimat):
         query = translator.translate_input_into_query(table="extracted_sigmet_test")
         print(f'translator -> {query}')
 
-        fetched_data = db.search(query=query)
-        if len(fetched_data) > 0:
-            for data in fetched_data:
-                print(data)
-        else:
-            print('Data sigmet belum diupdate pada hari ini. Mohon cek kemabali dalam 1 jam kemudian')
+        # fetched_data = db.search(query=query)
+        # if len(fetched_data) > 0:
+        #     for data in fetched_data:
+        #         print(data)
+        # else:
+        #     print('Data sigmet belum diupdate pada hari ini. Mohon cek kemabali dalam 1 jam kemudian')
     else:
         default_error, pattern_matching_error, rule = parsing.get_error_status()
         err = Error(rule)
@@ -125,5 +125,5 @@ def main(input_kalimat):
 
 
 if __name__ == "__main__":
-    input_kalimat = "Tampilkan seluruh field untuk info sigmet terkini"
+    input_kalimat = "Tampilkan info sigmet terkini untuk sigmet yang berada digunung dengan posisi lintang n1234 n12345"
     main(input_kalimat)

@@ -68,7 +68,6 @@ def process_prompt():
         print(
             f'attribute: {attribute}\nattribute kondisi: {attribute_condition}\nopertor: {operator}\ndata: {attribute_data}\ndata length: {data_length}')
         translator = Translator(attribute, attribute_condition, operator, attribute_data, data_length)
-        # change table to extracted_sigmet if u want using real data
         query = translator.translate_input_into_query(table)
         print(f'translator -> {query}')
 
@@ -76,7 +75,7 @@ def process_prompt():
         db.close_connection()
         if fetched_data:
             data = json.loads(json.dumps(fetched_data, default=str))
-
+            print(data)
             return jsonify(data)
         else:
             return jsonify({
@@ -86,13 +85,14 @@ def process_prompt():
         default_error, pattern_matching_error, rule = parsing.get_error_status()
         err = Error(rule)
         if pattern_matching_error is not None:
-            return jsonify({
-                "error": f"{err.rule_error()}"
-            })
+            err = json.loads(json.dumps(err.rule_error(), default=str))
+            # print(json.loads(err.rule_error()))
+            return jsonify(err)
         else:
-            return jsonify({
-                "error": f"{err.rule_error()}"
-            })
+            # print(json.loads(err.default_error()))
+            err = json.loads(json.dumps(err.default_error(), default=str))
+            # print(json.loads(err.rule_error()))
+            return jsonify(err)
 
 
 if __name__ == '__main__':
