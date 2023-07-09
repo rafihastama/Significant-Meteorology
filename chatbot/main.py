@@ -1,8 +1,9 @@
 import re
-import sys
-
-from var import var
+from pattern_rule import var
 from parsing import Parsing
+from error import Error
+from translator import Translator
+from sql_connection import sql
 
 
 def preprocessing_input(_input: str):
@@ -16,16 +17,15 @@ def preprocessing_input(_input: str):
     return data
 
 
-def main():
-    # scanner
+def test():
     arr_text = [
         "Tampilkan seluruh field untuk info sigmet terkini",
-        "Tampilkan lokasi gunung, posisi gunung dan polygon untuk kode sigmet 12",
+        "Tampilkan lokasi gunung, posisi gunung dan polygon untuk info sigmet terkini",
         "Tampilkan waktu valid untuk info sigmet terkini",
         "Tampilkan info sigmet terkini dengan ketinggian awan abu vulkanik diatas 2000 meter",
         "Tampilkan info sigmet terkini dengan ketinggian awan abu vulkanik dibawah 5000 kaki",
         "Tampilkan info sigmet terkini untuk flight level 123",
-        "Tampilkan info sigmet terkini untuk wilayah penyebaran abu vulkaniknya berada di lintang s1235 e12356",
+        "Tampilkan info sigmet terkini untuk wilayah penyebaran abu vulkaniknya berada di lintang S0811 E11255",
         "Tampilkan info sigmet terkini dengan waktu valid dari jam 09:00 hingga 12:11",
         "Tampilkan wilayah penyebaran abu vulkanik untuk kode sigmet 12",
         "Berapa lama waktu valid untuk kode sigmet 99",
@@ -60,32 +60,70 @@ def main():
 
         # parsing
         _str = ' '.join(map(str, in_token))
-        _parsing = Parsing()
-        _parsing.parsing_input(_str)
-        print("="*100, end="\n")
+        parsing = Parsing()
+        parsing_input = parsing.parsing_input(_str)
+        if parsing_input:
+            print(True)
+        #     # translator
+        #     attribute, attribute_condition, operator, attribute_data = parsing_input
+        #     print(f'attribute: {attribute}\nattribute condition: {attribute_condition}\nopertor: {operator}\ndata: {attribute_data}\n')
+        else:
+            print(False)
+        #     print("data yang anda input tidak dapat diproses")
 
+        print("=" * 100, end='\n')
+
+
+def main(input_kalimat):
+    # db connection
+    db = sql()
+    # Scanner
+    text = input_kalimat
+    text = preprocessing_input(text)
+    in_token = []
+    for t in text:
+        if any(_str in t for _str in var.KATA_YANG_TIDAK_DIABAIKAN):
+            in_token.append(t)
+
+        for pattern in var.IGNORE_PATTERN:
+            if len(re.findall(pattern, t)) > 0:
+                in_token.append(t)
+                break
+
+    print(f"Scanner -> {in_token}")
+
+    # parsing
+    _str = ' '.join(map(str, in_token))
+    parsing = Parsing()
+    parsing_input = parsing.parsing_input(_str)
+    print(_str)
+    if parsing_input:
+        # translator
+        attribute, attribute_condition, operator, attribute_data, data_length = parsing_input
+        print(
+            f'attribute: {attribute}\nattribute kondisi: {attribute_condition}\nopertor: {operator}\ndata: {attribute_data}\ndata length: {data_length}')
+        translator = Translator(attribute, attribute_condition, operator, attribute_data, data_length)
+        # change table to extracted_sigmet if u want using real data
+        query = translator.translate_input_into_query(table="extracted_sigmet_test")
+        print(f'translator -> {query}')
+
+        fetched_data = db.search(query=query)
+        if len(fetched_data) > 0:
+            for data in fetched_data:
+                print(data)
+        else:
+            print('Data sigmet belum diupdate pada hari ini. Mohon cek kemabali dalam 1 jam kemudian')
+    else:
+        default_error, pattern_matching_error, rule = parsing.get_error_status()
+        err = Error(rule)
+        if pattern_matching_error is not None:
+            print(err.rule_error())
+        else:
+            print(err.default_error())
+
+    db.close_connection()
 
 
 if __name__ == "__main__":
-    main()
-    # text = "Tampilkan info sigmet terkini untuk wilayah penyebaran abu vulkaniknya berada di lintang s1235 e12356"
-    # text = preprocessing_input(text)
-    # print(f'Scanner -> {text}')
-    #
-    # # token
-    # in_token = []
-    # for t in text:
-    #     if any(_str in t for _str in var.KATA_YANG_TIDAK_DIABAIKAN):
-    #         in_token.append(t)
-    #
-    #     for pattern in var.IGNORE_PATTERN:
-    #         if len(re.findall(pattern, t)) > 0:
-    #             in_token.append(t)
-    #             break
-    #
-    # print(f"Token -> {in_token}")
-    #
-    # # parsing
-    # _str = ' '.join(map(str, in_token))
-    # _parsing = Parsing()
-    # _parsing.parsing_input(_str)
+    input_kalimat = "Tampilkan seluruh field untuk info sigmet terkini dan !@#@!$%!@$ ketinggian awan abu vulkanik diatas 3000       meter"
+    main(input_kalimat)
