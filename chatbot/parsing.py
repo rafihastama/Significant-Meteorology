@@ -138,6 +138,7 @@ class Parsing:
 
     def parsing_input(self, _string: str):
         if re.match(var.TAMPILKAN, _string):
+            print('a')
             rule = "aturan 1"
             return self.__pattern_matching_input__(var.PATTERN_RULE_TAMPILKAN, _string, rule)
 

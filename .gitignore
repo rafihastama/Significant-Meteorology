@@ -6,3 +6,4 @@ ner/connection.json
 chatbot/test.py
 chatbot/__pycache__/
 chatbot/__deleted__/
+chatbot/env/

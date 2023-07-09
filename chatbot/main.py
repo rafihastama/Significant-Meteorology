@@ -125,5 +125,5 @@ def main(input_kalimat):
 
 
 if __name__ == "__main__":
-    input_kalimat = "Tampilkan seluruh field untuk info sigmet terkini dan !@#@!$%!@$ ketinggian awan abu vulkanik diatas 3000       meter"
+    input_kalimat = "Tampilkan seluruh field untuk info sigmet terkini"
     main(input_kalimat)
