@@ -131,7 +131,7 @@ closeButton.addEventListener('click', () => {
 })
 
 function addChatBubble (message, sender, isLoading = false) {
-  // Hapus semua pesan loading sebelum menampilkan hasil dari bot
+  // Hapus semua pesan loading sebelum menampilkan hasil respons dari bot
   const loadingBubbles = chatContainer.querySelectorAll('.chat-bubble.loading')
   loadingBubbles.forEach((bubble) => {
     chatContainer.removeChild(bubble)
