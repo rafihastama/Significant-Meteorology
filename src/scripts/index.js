@@ -30,27 +30,35 @@ async function getPolygonFromAPI () {
       data.forEach((item) => {
         if (item.polygon) {
           try {
-            // Ubah format string menjadi format array yang valid
             const formattedPolygon = item.polygon
               .replace(/\s/g, '') // Hilangkan spasi
               .split('],[') // Pisahkan setiap koordinat menjadi array terpisah
               .map((coord) => {
-                const [lat, lng] = coord.split(',').map(parseFloat) // Pisahkan latitude dan longitude, lalu konversi ke angka
-                // Periksa apakah kedua nilai tersebut adalah angka yang valid
+                const [lat, lng] = coord.replace('[', '').replace(']', '').split(',').map(parseFloat) // Pisahkan latitude dan longitude, lalu konversi ke angka
                 if (!isNaN(lat) && !isNaN(lng)) {
                   return [lat, lng]
                 }
               })
 
-            // Filter nilai yang valid dari formattedPolygon
             const validPolygon = formattedPolygon.filter((coord) => coord)
 
             if (validPolygon.length >= 3) {
               const polygon = L.polygon(validPolygon, { color: 'red' }).addTo(map)
 
-              // Menambahkan event hover pada polygon
               polygon.on('mouseover', function (e) {
-                this.bindPopup('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi imperdiet vestibulum lacus eu volutpat.').openPopup()
+                const matchingItem = data.find((item) => {
+                  const itemPolygon = item.polygon
+                    .replace(/\s/g, '')
+                    .split('],[')
+                    .map((coord) => coord.replace('[', '').replace(']', ''))
+                    .join(',')
+                  const hoveredPolygon = validPolygon.map((coord) => coord.join(',')).join(',')
+                  return itemPolygon === hoveredPolygon
+                })
+
+                if (matchingItem && matchingItem.sigmet) {
+                  this.bindPopup(matchingItem.sigmet).openPopup()
+                }
               })
             }
           } catch (error) {
