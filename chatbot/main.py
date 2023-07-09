@@ -1,8 +1,9 @@
 import re
-from var import var
+from pattern_rule import var
 from parsing import Parsing
 from error import Error
 from translator import Translator
+from sql_connection import sql
 
 
 def preprocessing_input(_input: str):
@@ -74,47 +75,44 @@ def test():
 
 
 def main(input_kalimat):
+    # db connection
+    db = sql()
+    # Scanner
     text = input_kalimat
     text = preprocessing_input(text)
-    print(f'Scanner -> {text}')
-
-    # token
     in_token = []
-    deleted_token = []  # test
     for t in text:
         if any(_str in t for _str in var.KATA_YANG_TIDAK_DIABAIKAN):
             in_token.append(t)
-        else:
-            deleted_token.append(t)
 
         for pattern in var.IGNORE_PATTERN:
             if len(re.findall(pattern, t)) > 0:
                 in_token.append(t)
                 break
 
-    print(f"Token -> {in_token}")
-    print(f"Deleted token -> {deleted_token}")
+    print(f"Scanner -> {in_token}")
 
     # parsing
     _str = ' '.join(map(str, in_token))
     parsing = Parsing()
     parsing_input = parsing.parsing_input(_str)
-    # db = sql_connection.sql()
     print(_str)
     if parsing_input:
         # translator
         attribute, attribute_condition, operator, attribute_data, data_length = parsing_input
-        print(f'attribute: {attribute}\nattribute condition: {attribute_condition}\nopertor: {operator}\ndata: {attribute_data}\ndata length: {data_length}')
+        print(
+            f'attribute: {attribute}\nattribute kondisi: {attribute_condition}\nopertor: {operator}\ndata: {attribute_data}\ndata length: {data_length}')
         translator = Translator(attribute, attribute_condition, operator, attribute_data, data_length)
-        query = translator.translate_input_into_query()
+        # change table to extracted_sigmet if u want using real data
+        query = translator.translate_input_into_query(table="extracted_sigmet_test")
         print(f'translator -> {query}')
 
-        # fetched_data = db.search(query=query)
-        # if len(fetched_data) > 0:
-        #     for data in fetched_data:
-        #         print(data)
-        # else:
-        #     print('Data sigmet belum diupdate pada hari ini. Mohon cek kemabali dalam 1 jam kemudian')
+        fetched_data = db.search(query=query)
+        if len(fetched_data) > 0:
+            for data in fetched_data:
+                print(data)
+        else:
+            print('Data sigmet belum diupdate pada hari ini. Mohon cek kemabali dalam 1 jam kemudian')
     else:
         default_error, pattern_matching_error, rule = parsing.get_error_status()
         err = Error(rule)
@@ -123,9 +121,9 @@ def main(input_kalimat):
         else:
             print(err.default_error())
 
-    # db.close_connection()
+    db.close_connection()
 
 
 if __name__ == "__main__":
-    input_kalimat = "tampilkan info sigmet terkini dengan kecepatan awan abu vulkaniknya diatas 31.23 km/s"
+    input_kalimat = "Tampilkan seluruh field untuk info sigmet terkini dan !@#@!$%!@$ ketinggian awan abu vulkanik diatas 3000       meter"
     main(input_kalimat)

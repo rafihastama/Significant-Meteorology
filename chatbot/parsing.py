@@ -1,4 +1,4 @@
-from var import var
+from pattern_rule import var
 from datetime import datetime
 import re
 
@@ -30,12 +30,12 @@ class Parsing:
         return f"%{', '.join(map(str, _arr))}%"
 
     def __find_attribute__(self, _string: str, field: str):
-        selected_field = []
+        selected_field = []  # selected attribute
         data_condition = {
             "str_b": "",  # string before where clause (condition)
             "str_a": "",  # string after where clause (condition)
             "con": "",  # value : where
-            "ac": [],  # attribute condition
+            "ac": [],  # attribute for where clause
             "d": [],  # data
             "op": []  # operator
         }
@@ -95,7 +95,6 @@ class Parsing:
                     data.append(f"'{_str}'")
                 else:
                     re_value = re.search(value.get("data"), data_condition["str_a"])
-                    print(re_value.groups())
                     if re_value:
                         for result in re_value.groups():
                             if result is not None:

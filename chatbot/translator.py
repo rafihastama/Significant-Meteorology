@@ -22,7 +22,7 @@ class Translator:
         return f"({field[0]} BETWEEN TIME '{date[0]}' AND TIME '{date[1]}' " \
                f"AND {field[1]} BETWEEN TIME '{date[0]}' AND TIME '{date[1]}')"
 
-    def translate_input_into_query(self):
+    def translate_input_into_query(self, table):
         cond = ""
         for i in range(self.n):
             if self.op[i] == 'valid_date':
@@ -34,6 +34,6 @@ class Translator:
             fields = ""
             for field in self.sf:
                 fields += f"{field}, "
-            return f"SELECT {fields[:len(fields)-2]} FROM extracted_sigmet WHERE {cond[:len(cond)-5]}"
+            return f"SELECT {fields[:len(fields)-2]} FROM {table} WHERE {cond[:len(cond)-5]}"
         else:
-            return f"SELECT {self.sf[0]} FROM extracted_sigmet WHERE {cond[:len(cond)-5]}"
+            return f"SELECT {self.sf[0]} FROM {table} WHERE {cond[:len(cond)-5]}"
