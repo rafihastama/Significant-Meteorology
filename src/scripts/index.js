@@ -23,18 +23,23 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Fungsi untuk mengambil data koordinat polygon dari API dan menampilkan pada peta
 async function getPolygonFromAPI () {
   try {
-    const response = await fetch('https://sigmet-chatbot.azurewebsites.net/')
+    const response = await fetch('https://sigmet-chatbot-1.azurewebsites.net/')
     const data = await response.json()
 
     if (Array.isArray(data)) {
       data.forEach((item) => {
         if (item.polygon) {
           try {
+            // Memformat string polygon dan mengubahnya menjadi array koordinat
             const formattedPolygon = item.polygon
-              .replace(/\s/g, '') // Hilangkan spasi
-              .split('],[') // Pisahkan setiap koordinat menjadi array terpisah
+              .replace(/\s/g, '') // Menghapus spasi
+              .split('],[') // Memisahkan setiap koordinat menjadi array terpisah
               .map((coord) => {
-                const [lat, lng] = coord.replace('[', '').replace(']', '').split(',').map(parseFloat) // Pisahkan latitude dan longitude, lalu konversi ke angka
+                const [lat, lng] = coord
+                  .replace('[', '')
+                  .replace(']', '')
+                  .split(',')
+                  .map(parseFloat) // Memisahkan latitude dan longitude, lalu mengubahnya menjadi angka
                 if (!isNaN(lat) && !isNaN(lng)) {
                   return [lat, lng]
                 }
@@ -43,22 +48,33 @@ async function getPolygonFromAPI () {
             const validPolygon = formattedPolygon.filter((coord) => coord)
 
             if (validPolygon.length >= 3) {
+              // Menambahkan polygon ke peta
               const polygon = L.polygon(validPolygon, { color: 'red' }).addTo(map)
 
               polygon.on('mouseover', function (e) {
-                const matchingItem = data.find((item) => {
+                // Memfilter item-data yang memiliki polygon yang sesuai dengan polygon yang sedang di-hover
+                const matchingItems = data.filter((item) => {
                   const itemPolygon = item.polygon
                     .replace(/\s/g, '')
                     .split('],[')
-                    .map((coord) => coord.replace('[', '').replace(']', ''))
-                    .join(',')
-                  const hoveredPolygon = validPolygon.map((coord) => coord.join(',')).join(',')
-                  return itemPolygon === hoveredPolygon
+                    .map((coord) => {
+                      const [lat, lng] = coord
+                        .replace('[', '')
+                        .replace(']', '')
+                        .split(',')
+                        .map(parseFloat)
+                      return [lat, lng]
+                    })
+
+                  return matchingPolygons(validPolygon, itemPolygon)
                 })
 
-                if (matchingItem && matchingItem.sigmet) {
-                  this.bindPopup(matchingItem.sigmet).openPopup()
-                }
+                // Menampilkan data SIGMET yang sesuai pada popup
+                matchingItems.forEach((matchingItem) => {
+                  if (matchingItem.sigmet) {
+                    this.bindPopup(matchingItem.sigmet).openPopup()
+                  }
+                })
               })
             }
           } catch (error) {
@@ -70,6 +86,24 @@ async function getPolygonFromAPI () {
   } catch (error) {
     console.error('Error fetching polygon data:', error)
   }
+}
+
+// Fungsi untuk memeriksa apakah dua polygon cocok/match
+function matchingPolygons (polygon1, polygon2) {
+  if (polygon1.length !== polygon2.length) {
+    return false
+  }
+
+  for (let i = 0; i < polygon1.length; i++) {
+    const [lat1, lon1] = polygon1[i]
+    const [lat2, lon2] = polygon2[i]
+
+    if (Math.abs(lat1 - lat2) > 0.01 || Math.abs(lon1 - lon2) > 0.01) {
+      return false
+    }
+  }
+
+  return true
 }
 
 // Panggil fungsi getPolygonFromAPI untuk menampilkan semua polygon dari API
@@ -131,7 +165,7 @@ closeButton.addEventListener('click', () => {
 })
 
 function addChatBubble (message, sender, isLoading = false) {
-  // Hapus semua pesan loading sebelum menampilkan hasil respons dari bot
+  // Hapus semua pesan loading sebelum menampilkan hasil dari bot
   const loadingBubbles = chatContainer.querySelectorAll('.chat-bubble.loading')
   loadingBubbles.forEach((bubble) => {
     chatContainer.removeChild(bubble)
