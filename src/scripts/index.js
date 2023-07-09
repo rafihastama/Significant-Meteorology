@@ -23,7 +23,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Fungsi untuk mengambil data koordinat polygon dari API dan menampilkan pada peta
 async function getPolygonFromAPI () {
   try {
-    const response = await fetch('https://sigmet-chatbot-1.azurewebsites.net/')
+    const response = await fetch('https://kkp-chatbot-test.azurewebsites.net/')
     const data = await response.json()
 
     if (Array.isArray(data)) {
