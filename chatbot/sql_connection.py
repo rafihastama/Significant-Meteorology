@@ -4,7 +4,6 @@ import mysql.connector
 
 class sql:
     def __init__(self):
-        self.cursor = None
         with open('connection.json') as data:
             conn_data = json.load(data)
             try:
@@ -20,14 +19,14 @@ class sql:
                 raise Exception(err.__str__())
 
     def search(self, query):
-        self.cursor = self.db.cursor()
+        cursor = self.db.cursor(dictionary=True)
         try:
-            self.cursor.execute(query)
-            return self.cursor.fetchall()
+            cursor.execute(query)
+            return cursor.fetchall()
         except mysql.connector.Error as err:
             print("Something went wrong when searching data: {}".format(err))
         finally:
-            self.cursor.close()
+            cursor.close()
 
     def close_connection(self):
         self.db.close()
