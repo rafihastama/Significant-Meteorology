@@ -89,6 +89,24 @@ async function getPolygonFromAPI () {
   }
 }
 
+// Fungsi untuk memeriksa apakah dua polygon cocok/match
+function matchingPolygons (polygon1, polygon2) {
+  if (polygon1.length !== polygon2.length) {
+    return false
+  }
+
+  for (let i = 0; i < polygon1.length; i++) {
+    const [lat1, lon1] = polygon1[i]
+    const [lat2, lon2] = polygon2[i]
+
+    if (Math.abs(lat1 - lat2) > 0.01 || Math.abs(lon1 - lon2) > 0.01) {
+      return false
+    }
+  }
+
+  return true
+}
+
 // Panggil fungsi getPolygonFromAPI untuk menampilkan semua polygon dari API
 getPolygonFromAPI()
 
