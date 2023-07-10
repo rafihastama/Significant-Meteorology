@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-eval */
 /* eslint-disable no-unexpected-multiline */
@@ -23,7 +24,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Fungsi untuk mengambil data koordinat polygon dari API dan menampilkan pada peta
 async function getPolygonFromAPI () {
   try {
-    const response = await fetch('https://kkp-chatbot.azurewebsites.net/')
+    const response = await fetch('https://kkp-chatbot-test.azurewebsites.net/')
     const data = await response.json()
 
     if (Array.isArray(data)) {
@@ -51,7 +52,7 @@ async function getPolygonFromAPI () {
               // Menambahkan polygon ke peta
               const polygon = L.polygon(validPolygon, { color: 'red' }).addTo(map)
 
-              polygon.on('mouseover', function (e) {
+              polygon.on('click', function (e) {
                 // Memfilter item-data yang memiliki polygon yang sesuai dengan polygon yang sedang di-hover
                 const matchingItems = data.filter((item) => {
                   const itemPolygon = item.polygon
@@ -86,24 +87,6 @@ async function getPolygonFromAPI () {
   } catch (error) {
     console.error('Error fetching polygon data:', error)
   }
-}
-
-// Fungsi untuk memeriksa apakah dua polygon cocok/match
-function matchingPolygons (polygon1, polygon2) {
-  if (polygon1.length !== polygon2.length) {
-    return false
-  }
-
-  for (let i = 0; i < polygon1.length; i++) {
-    const [lat1, lon1] = polygon1[i]
-    const [lat2, lon2] = polygon2[i]
-
-    if (Math.abs(lat1 - lat2) > 0.01 || Math.abs(lon1 - lon2) > 0.01) {
-      return false
-    }
-  }
-
-  return true
 }
 
 // Panggil fungsi getPolygonFromAPI untuk menampilkan semua polygon dari API
@@ -228,13 +211,9 @@ function formatBotResponse (data) {
     const formattedKey = key.replaceAll('_', ' ')
     let formattedValue = data[key]
 
-    // Special formatting for key
-    if (key === 'data polygon') {
-      formattedValue = formattedValue.replaceAll(' - ', '\n')
-    }
-
-    if (key === 'polygon ') {
-      formattedValue = formattedValue.replaceAll(' - ', '\n')
+    // Replace null values dengan "-"
+    if (formattedValue === null) {
+      formattedValue = '-'
     }
 
     formattedResponse += `${formattedKey}: ${formattedValue}\n`
@@ -254,7 +233,7 @@ closeButton.addEventListener('click', function () {
 
 async function getBotResponse (message) {
   const apiUrl = `
-  https://kkp-chatbot.azurewebsites.net/chat?question=${encodeURIComponent(message)}
+  https://kkp-chatbot-test.azurewebsites.net/chat?question=${encodeURIComponent(message)}
   `
   console.log(apiUrl)
   try {
@@ -276,12 +255,12 @@ async function getBotResponse (message) {
       const botResponse = formatBotResponse(data)
       addChatBubble(botResponse, 'bot')
     } else if (data.error) {
-      const err_msg = "Sepertinya ada kesalahan dengan kalimat yang anda inputkan. Berikut beberapa contohh kalimat yang dapat di proses:"
+      const err_msg = 'Sepertinya ada kesalahan dengan kalimat yang anda inputkan. Berikut beberapa contohh kalimat yang dapat di proses:'
       addChatBubble(err_msg, 'bot')
 
-      const err_datas = data['error'].replace(/(({|}|')+)/g, "").trim().split(", ")
+      const err_datas = data.error.replace(/(({|}|')+)/g, '').trim().split(', ')
       console.log(err_datas)
-      err_datas.forEach((err)=>{
+      err_datas.forEach((err) => {
         addChatBubble(err, 'bot')
       })
     } else {
