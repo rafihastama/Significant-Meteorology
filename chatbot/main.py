@@ -96,7 +96,7 @@ def main(input_kalimat):
     _str = ' '.join(map(str, in_token))
     parsing = Parsing()
     parsing_input = parsing.parsing_input(_str)
-    print(_str)
+    # print(_str)
     if parsing_input:
         # translator
         attribute, attribute_condition, operator, attribute_data, data_length = parsing_input
