@@ -1,0 +1,9 @@
+{
+    "user": "laqqueta",
+    "password": "32241mysqlDB#",
+    "host": "laqqueta.mysql.database.azure.com",
+    "port": 3306,
+    "database": "sigmet",
+    "ssl_ca": "cert/certi.pem",
+    "ssl_disabled": false
+}

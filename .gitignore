@@ -1,4 +1,9 @@
 node_modules
-py/__pycache__/
-py/test.py
-py/csv
+dist
+ner/__pycache__/
+ner/test.py
+ner/connection.json
+chatbot/test.py
+chatbot/__pycache__/
+chatbot/__deleted__/
+chatbot/env/
