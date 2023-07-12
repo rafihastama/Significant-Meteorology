@@ -36,10 +36,10 @@ class var:
             "jam": "release_time as jam_dirilis",
             "tanggal": "release_date as tanggal_dirilis"
         },
-        r"seluruh\sfield": "release_date as tanggal_sigmet_dirilis, release_time as jam_sigmet_dirilis, sigmet_code as kode_sigmet, valid_date as waktu_valid, flight_information, mountain as lokasi_gunung"
+        r"seluruh\sfield": "release_date as tanggal_sigmet_dirilis, release_time as jam_sigmet_dirilis, sigmet_code as kode_sigmet, valid_date as waktu_valid, flight_information, mountain as lokasi_gunung, "
                            "mountain_pos as posisi_gunung, observed_at as diobservasi, polygon_extracted as polygon, flight_level, feet as kaki, meter, "
                            "va_movement as arah_pergerakan_abu_vulkanik, va_speed as kecepatan_abu_vulkanik, intensitivity as intensitas_abu_vulkanik",
-        r"(info\ssigmet\sterkini|info\ssigmet\sterbaru)": "release_date as tanggal_sigmet_dirilis, release_time as jam_sigmet_dirilis, sigmet_code as kode_sigmet, valid_date as waktu_valid, flight_information, mountain as lokasi_gunung"
+        r"(info\ssigmet\sterkini|info\ssigmet\sterbaru)": "release_date as tanggal_sigmet_dirilis, release_time as jam_sigmet_dirilis, sigmet_code as kode_sigmet, valid_date as waktu_valid, flight_information, mountain as lokasi_gunung, "
                            "mountain_pos as posisi_gunung, observed_at as diobservasi, polygon_extracted as polygon, flight_level, feet as kaki, meter, "
                            "va_movement as arah_pergerakan_abu_vulkanik, va_speed as kecepatan_abu_vulkanik, intensitivity as intensitas_abu_vulkanik"
     }
