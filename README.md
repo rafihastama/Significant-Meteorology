@@ -1,5 +1,5 @@
 # Significant-Meteorology
-SIGMET Implementation using chatbot with NLP for Query method
+SIGMET Implementation using chatbot with NLP for Query Language method
 
 ## Usage
 
