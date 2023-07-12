@@ -125,5 +125,5 @@ def main(input_kalimat):
 
 
 if __name__ == "__main__":
-    input_kalimat = "Tampilkan info sigmet terkini untuk sigmet yang berada digunung dengan posisi lintang n1234 n12345"
+    input_kalimat = "Berapa ketinggian abu vulkanik untuk info sigmet terkini dan diobservasi antara jam 21:00 hingga 01:00 dan status intensitas abu vulkanik melemah"
     main(input_kalimat)

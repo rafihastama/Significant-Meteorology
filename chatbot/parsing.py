@@ -67,6 +67,7 @@ class Parsing:
         for key, value in var.pattern_matching_attribute.items():
             match = re.search(value.get("pattern"), data_condition["str_a"])
             if match:
+                print(key)
                 # find attribute condition
                 data_condition["ac"].append(value.get("attribute"))
                 # find data
@@ -99,6 +100,7 @@ class Parsing:
                         for result in re_value.groups():
                             if result is not None:
                                 data.append(result)
+
                 data_condition["d"].append(data)
                 # find operator
                 operator_str = match.group()
