@@ -8,7 +8,7 @@ class var:
         'meter', 'feet', 'movement', 'speed', 'intensitivity', 'kaki', 'meter', 'lintang', 'jam', 'hingga',
         'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal', 'sama', 'dibatalkan', 'tidak', 'ada', 'perubahan', 'ujung', 'padang',
         'dukono', 'ibu', 'karangetan', 'krakatau', 'lewotolo', 'semeru', 'antara', 'intensitifitas', 'melemah',
-        'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/s'
+        'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/h'
     ]
 
     IGNORE_PATTERN = [
