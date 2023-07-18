@@ -18,7 +18,7 @@ table = "extracted_sigmet"
 
 def get_polygon_and_raw_sigmet():
     db = sql()
-    query = f"SELECT sigmet, polygon FROM {table} WHERE polygon != '' AND release_date = DATE(convert_tz(now(), @@session.time_zone, '+07:00'))"
+    query = f"SELECT sigmet, polygon FROM {table} WHERE polygon != '' AND release_date = DATE(convert_tz(now(), @@session.time_zone, '+07:00')) AND status = 'Tidak Ada Perubahan Status Sigmet'"
     result = db.search(query)
     db.close_connection()
 
