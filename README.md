@@ -25,7 +25,7 @@ SIGMET Implementation using chatbot with NLP for Query Language method
 
 ### Condition:
 
-* untuk tanggal 21-05-1994
+* untuk sigmet tanggal 21-05-1994
 * sigmet kode 12 atau sigmet 12
 * untuk flight level 150 atau untuk fl 130
 * waktu valid dari jam 21:00 hingga 01:00
