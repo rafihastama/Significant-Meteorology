@@ -8,7 +8,7 @@ class var:
         'meter', 'feet', 'movement', 'speed', 'intensitivity', 'kaki', 'meter', 'lintang', 'jam', 'hingga',
         'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal', 'sama', 'dibatalkan', 'tidak', 'ada', 'perubahan', 'ujung', 'padang',
         'dukono', 'ibu', 'karangetan', 'krakatau', 'lewotolo', 'semeru', 'antara', 'intensitifitas', 'melemah',
-        'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/h'
+        'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/h', 'dirilis'
     ]
 
     IGNORE_PATTERN = [
@@ -45,10 +45,8 @@ class var:
     }
 
     condition = {
-        (r'(untuk)', r'dengan', r'yang'): "WHERE"
+        (r'untuk', r'dengan', r'yang'): "WHERE"
     }
-
-    ignore_condition = r'^((?!sama\sdengan).)*$'
 
     operator = {
         r"diatas": ">",
@@ -58,7 +56,7 @@ class var:
 
     pattern_matching_attribute = {
         "tanggal dikeluarkan": {
-            "pattern": r"sigmet\stanggal\s(\d{2}\-\d{2}\-\d{4})",
+            "pattern": r"(tanggal\s(\d{2}\-\d{2}\-\d{4}))|(dirilis\spada\stanggal\s(\d{2}\-\d{2}\-\d{4}))",
             "data": r"(\d{2}\-\d{2}\-\d{4})",
             "attribute": "release_date",
             "default_operator": "="
@@ -157,7 +155,7 @@ class var:
     # pattern regex untuk pengecekan aturan produksi
     TAMPILKAN = r"^(tampilkan)"
     PATTERN_RULE_TAMPILKAN = {
-        "field": r"tampilkan\s((seluruh\sfield)|(kode\ssigmet)((,\s)|(\sdan\s))?|(waktu\svalid)((,\s)|(\sdan\s))?|(lokasi\sdikeluarkannya)((,\s)|(\sdan\s))?|(lokasi\sgunung((,\s)|(\sdan\s))?)|(posisi\sgunung)((,\s)|(\sdan\s))?|(waktu\sdiobservasi)((,\s)|(\sdan\s))?|(polygon)((,\s)|(\sdan\s))?|(flight\slevel)((,\s)|(\sdan\s))?|(meter|kaki)((,\s)|(\sdan\s))?|(pergerakan\sabu\svulkanik)((,\s)|(\sdan\s))?|(kecepatan\sabu\svulkanik)((,\s)|(\sdan\s))?|(intensitas\sabu\svulkanik)((,\s)|(\sdan\s))?|(status)((,\s)|(\sdan\s))?|(jam\ssigmet\sdikeluarkan)((,\s)|(\sdan\s))?|(tanggal\ssigmet\sdikeluarkan)((,\s)|(\sdan\s))?)+\suntuk\s(info\ssigmet\sterkini|info\ssigmet\sterbaru|kode\ssigmet\s\d{2}|sigmet\stanggal\s(\d{2}\-\d{2}\-\d{4}))",
+        "field": r"tampilkan\s((seluruh\sfield)|(kode\ssigmet)((,\s)|(\sdan\s))?|(waktu\svalid)((,\s)|(\sdan\s))?|(lokasi\sdikeluarkannya)((,\s)|(\sdan\s))?|(lokasi\sgunung((,\s)|(\sdan\s))?)|(posisi\sgunung)((,\s)|(\sdan\s))?|(waktu\sdiobservasi)((,\s)|(\sdan\s))?|(polygon)((,\s)|(\sdan\s))?|(flight\slevel)((,\s)|(\sdan\s))?|(ketinggian\sabu\svulkanik)((,\s)|(\sdan\s))?|(pergerakan\sabu\svulkanik)((,\s)|(\sdan\s))?|(kecepatan\sabu\svulkanik)((,\s)|(\sdan\s))?|(intensitas\sabu\svulkanik)((,\s)|(\sdan\s))?|(status)((,\s)|(\sdan\s))?|(jam\ssigmet\sdikeluarkan)((,\s)|(\sdan\s))?|(tanggal\ssigmet\sdikeluarkan)((,\s)|(\sdan\s))?)+\suntuk\s(info\ssigmet\sterkini|info\ssigmet\sterbaru|kode\ssigmet\s\d{2}|sigmet\stanggal\s(\d{2}\-\d{2}\-\d{4}))",
         "ketinggian": r"ketinggian\sawan\sabu\svulkanik\s(diatas|dibawah)\s(\d{,6})\s(meter|kaki)",
         "flight level": r"untuk\sflight\slevel\s(\d{3})|untuk\sfl\s(\d{3})",
         "lintang": r"lintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
@@ -167,6 +165,7 @@ class var:
         "flight information": r"dikeluarkan\sdari\sflight\sinformation\s(ujung\spadang|jakarta)",
         "mountain location": r"gunung\s(dukono|ibu|karangetan|krakatau|lewotolo|semeru)",
         "mountain position": r"gunung\sdengan\sposisi\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
+        "release_date": r"dirilis\spada\stanggal\s(\d{2}\-\d{2}\-\d{4})",
         "observed": r"diobservasi\santara\sjam\s((\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2}))",
         "intesitivity": r"status\sintensitas\sabu\svulkanik\s(melemah|intensif|tidak\sada\sperubahan)",
         "volcanic ash movement": r"awan\sabu\svulkaniknya\sbergerak\skearah\s(barat\slaut|barat\sdaya|barat|selatan|tenggara|timur\slaut|timur|utara)",

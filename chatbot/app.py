@@ -8,7 +8,7 @@ from sql_connection import sql
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-table = "extracted_sigmet"
+table = "extracted_sigmet_test"
 
 # app-name : kkp-chatbot
 # app-name : kkp-chatbot-test
