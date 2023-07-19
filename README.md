@@ -10,6 +10,7 @@ SIGMET Implementation using chatbot with NLP for Query Language method
 * Tampilkan (info sigmet terkini/info sigmet terbaru) untuk (flight level/fl) 123
 * Tampilkan (info sigmet terkini/info sigmet terbaru) untuk wilayah penyebaran abu vulkaniknya berada di lintang S1234 N12345
 * Tampilkan (info sigmet terkini/info sigmet terbaru) dengan waktu valid dari jam 23:59 hingga 01:00
+* Tampilkan seluruh field untuk sigmet yang dirilis pada tanggal 16-06-2023
 * Tampilkan wilayah penyebaran abu vulkanik untuk (info sigmet terkini/info sigmet terbaru/kode sigmet 99)
 * Berapa lama waktu valid untuk (info sigmet terkini/info sigmet terbaru/kode sigmet 99)
 * Berapa ketinggian abu vulkanik untuk (info sigmet terkini/info sigmet terbaru/kode sigmet 99)
