@@ -31,7 +31,7 @@ SIGMET Implementation using chatbot with NLP for Query Language method
 * untuk flight level 150 atau untuk fl 130
 * waktu valid dari jam 21:00 hingga 01:00
 * ketinggian awan abu vulkanik diatas 3000 meter
-* lintang S1020 W11230
+* sigmet berada dilintang S1020 W11230
 * status sigmet (dibatalkan atau tidak ada perubahan)
 * dikeluarkan dari flight information (ujung padang atau jakarta)
 * berada digunung (dukono atau ibu atau karangetan atau krakatau atau lewotolo atau semeru)
