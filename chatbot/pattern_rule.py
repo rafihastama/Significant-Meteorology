@@ -8,7 +8,7 @@ class var:
         'meter', 'feet', 'movement', 'speed', 'intensitivity', 'kaki', 'meter', 'lintang', 'jam', 'hingga',
         'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal', 'sama', 'dibatalkan', 'tidak', 'ada', 'perubahan', 'ujung', 'padang',
         'dukono', 'ibu', 'karangetan', 'krakatau', 'lewotolo', 'semeru', 'antara', 'intensitifitas', 'melemah',
-        'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/h', 'dirilis'
+        'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/h', 'dirilis', 'dilintang'
     ]
 
     IGNORE_PATTERN = [
@@ -98,7 +98,7 @@ class var:
             "default_operator": None
         },
         "lintang": {
-            "pattern": r"lintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
+            "pattern": r"dilintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
             "attribute": "polygon",
             "data": r"([nsew]\d{4,5}\s[nsew]\d{4,5})",
             "default_operator": "LIKE"
@@ -158,7 +158,7 @@ class var:
         "field": r"tampilkan\s((seluruh\sfield)|(kode\ssigmet)((,\s)|(\sdan\s))?|(waktu\svalid)((,\s)|(\sdan\s))?|(lokasi\sdikeluarkannya)((,\s)|(\sdan\s))?|(lokasi\sgunung((,\s)|(\sdan\s))?)|(posisi\sgunung)((,\s)|(\sdan\s))?|(waktu\sdiobservasi)((,\s)|(\sdan\s))?|(polygon)((,\s)|(\sdan\s))?|(flight\slevel)((,\s)|(\sdan\s))?|(ketinggian\sabu\svulkanik)((,\s)|(\sdan\s))?|(pergerakan\sabu\svulkanik)((,\s)|(\sdan\s))?|(kecepatan\sabu\svulkanik)((,\s)|(\sdan\s))?|(intensitas\sabu\svulkanik)((,\s)|(\sdan\s))?|(status)((,\s)|(\sdan\s))?|(jam\ssigmet\sdikeluarkan)((,\s)|(\sdan\s))?|(tanggal\ssigmet\sdikeluarkan)((,\s)|(\sdan\s))?)+\suntuk\s(info\ssigmet\sterkini|info\ssigmet\sterbaru|kode\ssigmet\s\d{2}|sigmet\stanggal\s(\d{2}\-\d{2}\-\d{4}))",
         "ketinggian": r"ketinggian\sawan\sabu\svulkanik\s(diatas|dibawah)\s(\d{,6})\s(meter|kaki)",
         "flight level": r"untuk\sflight\slevel\s(\d{3})|untuk\sfl\s(\d{3})",
-        "lintang": r"lintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
+        "lintang": r"dilintang\s([nsew]\d{4,5}\s[nsew]\d{4,5})",
         "valid": r"waktu\svalid\sdari\sjam\s((\d{2}:\d{2})\s(\d{2}:\d{2})|(\d{2}:\d{2})\shingga\s(\d{2}:\d{2}))",
         "penyebaran abu vulkanik": r"wilayah\spenyebaran\sabu\svulkanik\s\w+\s(info\ssigmet\sterkini|info\ssigmet\sterbaru|kode\ssigmet\s\d{2}|sigmet\stanggal\s(\d{2}\-\d{2}\-\d{4}))",
         "status": r"status\ssigmet\s(dibatalkan|tidak\sada\sperubahan)",

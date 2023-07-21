@@ -1,7 +1,9 @@
 from pattern_rule import var
 from datetime import datetime
+from mpmath import mpf, mp, nstr
 import re
 
+mp.dps = 5
 
 class Parsing:
     def __init__(self):
@@ -17,15 +19,20 @@ class Parsing:
             degree = arr[i][1:len(arr[i]) - 2]
             minute = arr[i][len(arr[i]) - 2:]
             calc = float("{:.2f}".format(float(degree) + (float(minute) / 60.0)))
-            if wind_dir:
-                _format = f"{calc}\N{DEGREE SIGN} " \
-                          f"{'Utara' if 'N' in coords[i] else 'Timur' if 'E' in coords[i] else 'Selatan' if 'S' in coords[i] else 'Barat'}"
-                _str_tmp.append(_format)
+            # if wind_dir:
+            if 'S' in arr[i].upper():
+                calc = -(mpf(degree) + (mpf(minute) / mpf(60)))
+                # _format = f"{calc}\N{DEGREE SIGN} " \
+                #           f"{'Utara' if 'N' in arr[i].upper() else 'Timur' if 'E' in arr[i].upper() else 'Selatan' if 'S' in arr[i].upper() else 'Barat'}"
+            else:
+                calc = (mpf(degree) + (mpf(minute) / 60))
+                # _format = f"{calc}\N{DEGREE SIGN} " \
+                #           f"{'Utara' if 'N' in arr[i].upper() else 'Timur' if 'E' in arr[i].upper() else 'Selatan' if 'S' in arr[i].upper() else 'Barat'}"
 
-            _arr.append(calc)
+            _arr.append(nstr(mpf(calc), 10, strip_zeros=False))
 
-        if wind_dir:
-            return " ".join(map(str, _str_tmp))
+        # if wind_dir:
+        #     return " ".join(map(str, _str_tmp))
 
         return f"%{', '.join(map(str, _arr))}%"
 
