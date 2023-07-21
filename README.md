@@ -29,7 +29,7 @@ SIGMET Implementation using chatbot with NLP for Query Language method
 * untuk sigmet tanggal 21-05-1994
 * sigmet kode 12 atau sigmet 12
 * untuk flight level 150 atau untuk fl 130
-* waktu valid dari jam 21:00 hingga 01:00
+* yang mempunyai waktu valid dari jam 21:00 hingga 01:00
 * ketinggian awan abu vulkanik diatas 3000 meter
 * sigmet berada dilintang S1020 W11230
 * status sigmet (dibatalkan atau tidak ada perubahan)
