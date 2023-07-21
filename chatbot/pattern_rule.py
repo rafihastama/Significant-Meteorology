@@ -7,7 +7,7 @@ class var:
         'flight information', 'gunung', 'posisi', 'gunung', 'polygon', 'flight', 'level', 'waktu',
         'meter', 'feet', 'movement', 'speed', 'intensitivity', 'kaki', 'meter', 'lintang', 'jam', 'hingga',
         'pergerakan', 'awan', 'diatas', 'dibawah', 'tanggal', 'sama', 'dibatalkan', 'tidak', 'ada', 'perubahan', 'ujung', 'padang',
-        'dukono', 'ibu', 'karangetan', 'krakatau', 'lewotolo', 'semeru', 'antara', 'intensitifitas', 'melemah',
+        'dukono', 'ibu', 'karangetan', 'krakatau', 'lewotolo', 'semeru', 'antara', 'intensitifitas', 'melemah', 'mempunyai',
         'intensif', 'daya', 'barat', 'selatan', 'tenggara', 'timur', 'laut', 'utara', 'km/h', 'dirilis', 'dilintang'
     ]
 
