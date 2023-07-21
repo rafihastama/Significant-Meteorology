@@ -148,7 +148,7 @@ class var:
         "volcanic ash speed": {
             "pattern": r"kecepatan\sawan\sabu\svulkaniknya\s(diatas|dibawah|sama\sdengan)\s((\d{,2}\.\d{,2})|(\d{1,2}))\skm\/h",
             "attribute": "va_speed",
-            "data": r"((\d{,2}\.\d{,2})|(\d{1,2}))",
+            "data": r"((\d{,2}\.\d{,2})|(\d{1,2}))\skm",
             "default_operator": None
         }
     }

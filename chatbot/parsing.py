@@ -22,17 +22,17 @@ class Parsing:
             # if wind_dir:
             if 'S' in arr[i].upper():
                 calc = -(mpf(degree) + (mpf(minute) / mpf(60)))
-                # _format = f"{calc}\N{DEGREE SIGN} " \
-                #           f"{'Utara' if 'N' in arr[i].upper() else 'Timur' if 'E' in arr[i].upper() else 'Selatan' if 'S' in arr[i].upper() else 'Barat'}"
+                _format = f"{calc}\N{DEGREE SIGN} " \
+                          f"{'Utara' if 'N' in arr[i].upper() else 'Timur' if 'E' in arr[i].upper() else 'Selatan' if 'S' in arr[i].upper() else 'Barat'}"
             else:
                 calc = (mpf(degree) + (mpf(minute) / 60))
-                # _format = f"{calc}\N{DEGREE SIGN} " \
-                #           f"{'Utara' if 'N' in arr[i].upper() else 'Timur' if 'E' in arr[i].upper() else 'Selatan' if 'S' in arr[i].upper() else 'Barat'}"
-
+                _format = f"{calc}\N{DEGREE SIGN} " \
+                          f"{'Utara' if 'N' in arr[i].upper() else 'Timur' if 'E' in arr[i].upper() else 'Selatan' if 'S' in arr[i].upper() else 'Barat'}"
+            _str_tmp.append(_format)
             _arr.append(nstr(mpf(calc), 10, strip_zeros=False))
 
-        # if wind_dir:
-        #     return " ".join(map(str, _str_tmp))
+        if wind_dir:
+            return f"%{' '.join(map(str, _str_tmp))}%"
 
         return f"%{', '.join(map(str, _arr))}%"
 
@@ -86,7 +86,7 @@ class Parsing:
                 elif key == "lintang":
                     search = re.search(value.get("data"), data_condition['str_a'])
                     if search:
-                        data.append(f"'{self.__format_coordinates__(search.group().__str__())}'")
+                        data.append(f"'{self.__format_coordinates__(search.group().__str__(), wind_dir=False)}'")
                 elif key == "status sigmet" \
                         or key == "flight information" \
                         or key == "mountain location" \
