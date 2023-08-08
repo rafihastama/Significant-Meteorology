@@ -1,7 +1,10 @@
 # Significant-Meteorology
 SIGMET Implementation using chatbot with NLP for Query Language method
 
-## Usage
+## Usage:
+* npm install
+* npm run start-dev (to run locally from folders)
+* npm run build -> npm run serve (to run http serve from dist folder)
 
 ### Input Type:
 
@@ -10,6 +13,7 @@ SIGMET Implementation using chatbot with NLP for Query Language method
 * Tampilkan (info sigmet terkini/info sigmet terbaru) untuk (flight level/fl) 123
 * Tampilkan (info sigmet terkini/info sigmet terbaru) untuk wilayah penyebaran abu vulkaniknya berada di lintang S1234 N12345
 * Tampilkan (info sigmet terkini/info sigmet terbaru) dengan waktu valid dari jam 23:59 hingga 01:00
+* Tampilkan seluruh field untuk sigmet yang dirilis pada tanggal 16-06-2023
 * Tampilkan wilayah penyebaran abu vulkanik untuk (info sigmet terkini/info sigmet terbaru/kode sigmet 99)
 * Berapa lama waktu valid untuk (info sigmet terkini/info sigmet terbaru/kode sigmet 99)
 * Berapa ketinggian abu vulkanik untuk (info sigmet terkini/info sigmet terbaru/kode sigmet 99)
@@ -25,12 +29,12 @@ SIGMET Implementation using chatbot with NLP for Query Language method
 
 ### Condition:
 
-* untuk tanggal 21-05-1994
+* untuk sigmet tanggal 21-05-1994
 * sigmet kode 12 atau sigmet 12
 * untuk flight level 150 atau untuk fl 130
-* waktu valid dari jam 21:00 hingga 01:00
+* yang mempunyai waktu valid dari jam 21:00 hingga 01:00
 * ketinggian awan abu vulkanik diatas 3000 meter
-* lintang S1020 W11230
+* sigmet berada dilintang S1020 W11230
 * status sigmet (dibatalkan atau tidak ada perubahan)
 * dikeluarkan dari flight information (ujung padang atau jakarta)
 * berada digunung (dukono atau ibu atau karangetan atau krakatau atau lewotolo atau semeru)
