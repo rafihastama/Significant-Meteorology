@@ -273,7 +273,7 @@ async function getBotResponse (message) {
       const botResponse = formatBotResponse(data)
       addChatBubble(botResponse, 'bot')
     } else if (data.error) {
-      const err_msg = 'Sepertinya ada kesalahan dengan kalimat yang anda inputkan. Berikut beberapa contoh kalimat yang dapat di proses:'
+      const err_msg = 'Sepertinya ada yang salah dengan kalimat yang anda inputkan. Jika kami tidak memberikan contoh format kalimat yang benar, berarti data sigmet belum ada.'
       addChatBubble(err_msg, 'bot')
 
       const err_datas = data.error.replace(/(({|}|')+)/g, '').trim().split(', ')
