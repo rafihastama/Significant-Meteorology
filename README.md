@@ -1,7 +1,10 @@
 # Significant-Meteorology
 SIGMET Implementation using chatbot with NLP for Query Language method
 
-## Usage
+## Usage:
+* npm install
+* npm run start-dev (to run locally from folders)
+* npm run build -> npm run serve (to run http serve from dist folder)
 
 ### Input Type:
 
