@@ -24,7 +24,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Fungsi untuk mengambil data koordinat polygon dari API dan menampilkan pada peta
 async function getPolygonFromAPI () {
   try {
-    const response = await fetch('https://kkp-chatbot-test.azurewebsites.net/')
+    const response = await fetch('https://kkp-chatbot.azurewebsites.net/')
     const data = await response.json()
 
     if (Array.isArray(data)) {
@@ -251,7 +251,7 @@ closeButton.addEventListener('click', function () {
 
 async function getBotResponse (message) {
   const apiUrl = `
-  https://kkp-chatbot-test.azurewebsites.net/chat?question=${encodeURIComponent(message)}
+  https://kkp-chatbot.azurewebsites.net/chat?question=${encodeURIComponent(message)}
   `
   console.log(apiUrl)
   try {
@@ -273,7 +273,7 @@ async function getBotResponse (message) {
       const botResponse = formatBotResponse(data)
       addChatBubble(botResponse, 'bot')
     } else if (data.error) {
-      const err_msg = 'Sepertinya ada kesalahan dengan kalimat yang anda inputkan. Berikut beberapa contohh kalimat yang dapat di proses:'
+      const err_msg = 'Sepertinya ada kesalahan dengan kalimat yang anda inputkan. Berikut beberapa contoh kalimat yang dapat di proses:'
       addChatBubble(err_msg, 'bot')
 
       const err_datas = data.error.replace(/(({|}|')+)/g, '').trim().split(', ')
